@@ -31,7 +31,7 @@ jobs:
 
       - name: Set release tag
         run: |
-          export TAG_NAME="$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(echo $GITHUB_SHA | cut -c 1-12)"
+          export TAG_NAME="$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(git rev-parse --short=12 HEAD)"
           echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
       #- name: Set changelog
       #  id: changelog
@@ -40,16 +40,10 @@ jobs:
       #    text="$(git --no-pager log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%h %s")"
       #    echo "::set-output name=CHANGELOG::$text"
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release
+        uses: softprops/action-gh-release@v1
         with:
+          name: Release ${{ env.RELEASE_TAG }}
           tag_name: ${{ env.RELEASE_TAG }}
-          release_name: ${{ env.RELEASE_TAG }}
-          #body: |
-          #  Changes in this Release
-          #  ${{ steps.changelog.outputs.CHANGELOG }}"
           draft: false
           prerelease: false
