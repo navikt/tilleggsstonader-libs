@@ -55,6 +55,13 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: Publish
+        uses: gradle/gradle-build-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          arguments: -Pversion=${{ env.RELEASE_TAG }} publish
+
       - name: Post release failures to Slack
         if: failure()
         run: |
