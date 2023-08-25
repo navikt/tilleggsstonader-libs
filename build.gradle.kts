@@ -32,7 +32,7 @@ subprojects {
         // Align versions of all Kotlin components
         implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
         implementation(kotlin("stdlib"))
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.2"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.3"))
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.assertj:assertj-core")
     }
