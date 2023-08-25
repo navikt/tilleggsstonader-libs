@@ -52,26 +52,18 @@ class LogFilterTest {
             .isEqualTo(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
     }
 
-    private val mockHttpServletRequest: HttpServletRequest
-        get() {
-            val method = "GET"
-            val requestUri = "/test/path"
-            val request: HttpServletRequest = mockk(relaxed = true)
-            every { request.method } returns method
-            every { request.requestURI } returns requestUri
-            return request
-        }
+    private val mockHttpServletRequest = mockk<HttpServletRequest>(relaxed = true).also {
+        every { it.method } returns "GET"
+        every { it.requestURI } returns "/test/path"
+    }
 
-    private val mockHttpServletResponse: HttpServletResponse
-        get() {
-            val response: HttpServletResponse = mockk(relaxed = true)
-            val headers: MutableMap<String, String> = HashMap()
-            val status = intArrayOf(0)
-            every { response.status = any() } answers { status[0] = firstArg() }
-            every { response.setHeader(any(), any()) } answers { headers[firstArg()] = secondArg() }
-            every { response.status } answers { status[0] }
-            every { response.getHeader(any()) } answers { headers[firstArg()] }
-            every { response.headerNames } answers { headers.keys }
-            return response
-        }
+    private val mockHttpServletResponse = mockk<HttpServletResponse>(relaxed = true).also {
+        val headers: MutableMap<String, String> = HashMap()
+        val status = intArrayOf(0)
+        every { it.status = any() } answers { status[0] = firstArg() }
+        every { it.setHeader(any(), any()) } answers { headers[firstArg()] = secondArg() }
+        every { it.status } answers { status[0] }
+        every { it.getHeader(any()) } answers { headers[firstArg()] }
+        every { it.headerNames } answers { headers.keys }
+    }
 }
