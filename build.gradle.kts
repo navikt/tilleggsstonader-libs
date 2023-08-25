@@ -39,8 +39,13 @@ subprojects {
 
     dependencies {
         implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.3"))
+
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.assertj:assertj-core")
+        testImplementation("io.mockk:mockk:1.13.7")
+
+        testImplementation("ch.qos.logback:logback-core")
+        testImplementation("ch.qos.logback:logback-classic")
     }
 
     tasks.jar {
