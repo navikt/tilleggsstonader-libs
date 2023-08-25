@@ -21,6 +21,13 @@ jobs:
         with:
           arguments: build
 
+      - name: Post build failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   release:
     name: Create Release
     needs: build
@@ -47,3 +54,10 @@ jobs:
           tag_name: ${{ env.RELEASE_TAG }}
           draft: false
           prerelease: false
+
+      - name: Post release failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data "{\"text\": \"Release av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
