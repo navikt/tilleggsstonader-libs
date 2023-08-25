@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 val javaVersion = JavaVersion.VERSION_17
 
@@ -12,6 +13,11 @@ plugins {
 allprojects {
     repositories {
         mavenCentral()
+    }
+
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    configure<KtlintExtension> {
+        version.set("0.50.0")
     }
 }
 
