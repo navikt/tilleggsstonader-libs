@@ -2,6 +2,7 @@ package no.nav.tilleggsstonader.libs.log.filter
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpFilter
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import no.nav.tilleggsstonader.libs.log.IdUtils
@@ -12,12 +13,11 @@ import no.nav.tilleggsstonader.libs.log.mdc.MDCConstants.MDC_REQUEST_ID
 import no.nav.tilleggsstonader.libs.log.mdc.MDCConstants.MDC_USER_ID
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
-import org.springframework.web.filter.OncePerRequestFilter
 import java.io.EOFException
 
-class LogFilter : OncePerRequestFilter() {
+class LogFilter : HttpFilter() {
 
-    override fun doFilterInternal(
+    override fun doFilter(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
@@ -68,6 +68,35 @@ class LogFilter : OncePerRequestFilter() {
         }
     }
 
+    private fun resolveCallId(request: HttpServletRequest): String {
+        return NAV_CALL_ID_HEADER_NAMES
+            .mapNotNull { request.getHeader(it) }
+            .firstOrNull { it.isNotEmpty() }
+            ?: IdUtils.generateId()
+    }
+
+    private fun resolveRequestId(request: HttpServletRequest): String {
+        return NAV_REQUEST_ID_HEADER_NAMES
+            .mapNotNull { request.getHeader(it) }
+            .firstOrNull { it.isNotEmpty() }
+            ?: IdUtils.generateId()
+    }
+
+    private fun generateUserIdCookie(response: HttpServletResponse) {
+        val userId = IdUtils.generateId()
+        val cookie = Cookie(RANDOM_USER_ID_COOKIE_NAME, userId).apply {
+            path = "/"
+            maxAge = ONE_MONTH_IN_SECONDS
+            isHttpOnly = true
+            secure = true
+        }
+        response.addCookie(cookie)
+    }
+
+    private fun resolveUserId(request: HttpServletRequest): String? {
+        return request.cookies?.firstOrNull { it -> RANDOM_USER_ID_COOKIE_NAME == it.name }?.value
+    }
+
     companion object {
         // there is no consensus in NAV about header-names for correlation ids, so we support 'em all!
         // https://nav-it.slack.com/archives/C9UQ16AH4/p1538488785000100
@@ -87,34 +116,5 @@ class LogFilter : OncePerRequestFilter() {
         private val LOG = LoggerFactory.getLogger(LogFilter::class.java)
         private const val RANDOM_USER_ID_COOKIE_NAME = "RUIDC"
         private const val ONE_MONTH_IN_SECONDS = 60 * 60 * 24 * 30
-
-        private fun resolveCallId(request: HttpServletRequest): String {
-            return NAV_CALL_ID_HEADER_NAMES
-                .mapNotNull { request.getHeader(it) }
-                .firstOrNull { it.isNotEmpty() }
-                ?: IdUtils.generateId()
-        }
-
-        private fun resolveRequestId(request: HttpServletRequest): String {
-            return NAV_REQUEST_ID_HEADER_NAMES
-                .mapNotNull { request.getHeader(it) }
-                .firstOrNull { it.isNotEmpty() }
-                ?: IdUtils.generateId()
-        }
-
-        private fun generateUserIdCookie(response: HttpServletResponse) {
-            val userId = IdUtils.generateId()
-            val cookie = Cookie(RANDOM_USER_ID_COOKIE_NAME, userId).apply {
-                path = "/"
-                maxAge = ONE_MONTH_IN_SECONDS
-                isHttpOnly = true
-                secure = true
-            }
-            response.addCookie(cookie)
-        }
-
-        private fun resolveUserId(request: HttpServletRequest): String? {
-            return request.cookies?.firstOrNull { it -> RANDOM_USER_ID_COOKIE_NAME == it.name }?.value
-        }
     }
 }

@@ -1,16 +1,16 @@
 package no.nav.tilleggsstonader.libs.log.filter
 
 import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpFilter
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.util.StopWatch
-import org.springframework.web.filter.OncePerRequestFilter
 
-class RequestTimeFilter : OncePerRequestFilter() {
+class RequestTimeFilter : HttpFilter() {
 
-    override fun doFilterInternal(
+    override fun doFilter(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
