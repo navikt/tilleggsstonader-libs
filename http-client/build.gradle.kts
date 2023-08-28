@@ -11,7 +11,7 @@ dependencies {
     implementation("org.springframework:spring-context")
     implementation("org.springframework:spring-web")
 
-    implementation("org.apache.httpcomponents.client5:httpclient5")
+    api("org.apache.httpcomponents.client5:httpclient5")
 
     // Token support security
     api("no.nav.security:token-client-core:$tokenSupportVersion")
