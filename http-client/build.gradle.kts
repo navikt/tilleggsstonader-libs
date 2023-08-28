@@ -14,9 +14,9 @@ dependencies {
     implementation("org.apache.httpcomponents.client5:httpclient5")
 
     // Token support security
-    implementation("no.nav.security:token-client-core:$tokenSupportVersion")
-    implementation("no.nav.security:token-client-spring:$tokenSupportVersion")
-    implementation("no.nav.security:token-validation-spring:$tokenSupportVersion")
+    api("no.nav.security:token-client-core:$tokenSupportVersion")
+    api("no.nav.security:token-client-spring:$tokenSupportVersion")
+    api("no.nav.security:token-validation-spring:$tokenSupportVersion")
 
     testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:$wiremockVersion")
 }
