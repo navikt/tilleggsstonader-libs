@@ -55,7 +55,7 @@ class RestTemplateConfiguration {
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
     ): RestTemplateBuilder {
         return restTemplateBuilder
-            .setConnectTimeout(Duration.of(5, ChronoUnit.SECONDS))
+            .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
             .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
             .additionalInterceptors(
                 consumerIdClientInterceptor,
@@ -86,8 +86,6 @@ class RestTemplateConfiguration {
         bearerTokenClientInterceptor: BearerTokenClientInterceptor,
     ): RestOperations {
         return restTemplateBuilder
-            .setConnectTimeout(Duration.of(5, ChronoUnit.SECONDS))
-            .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
     }
