@@ -8,3 +8,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api")
     implementation("jakarta.servlet:jakarta.servlet-api")
 }
+
+tasks.sourcesJar {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}

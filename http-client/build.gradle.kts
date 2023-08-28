@@ -20,3 +20,7 @@ dependencies {
 
     testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:$wiremockVersion")
 }
+
+tasks.sourcesJar {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
