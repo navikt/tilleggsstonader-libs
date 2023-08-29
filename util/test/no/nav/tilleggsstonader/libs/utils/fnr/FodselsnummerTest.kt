@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-internal class FødselsnummerTest {
+internal class FodselsnummerTest {
 
     @Test
     internal fun `skal tillate helsyntetiske nummer fra dolly`() {
@@ -26,17 +26,17 @@ internal class FødselsnummerTest {
         )
 
         listeAvBrukere.forEach {
-            assertThat(it.fnr).isEqualTo(Fødselsnummer(it.fnr).verdi)
+            assertThat(it.fnr).isEqualTo(Fodselsnummer(it.fnr).verdi)
                 .withFailMessage { "Fødselsnummer ${it.fnr} er gyldig" }
-            assertThat(it.dnr).isEqualTo(Fødselsnummer(it.dnr).verdi)
+            assertThat(it.dnr).isEqualTo(Fodselsnummer(it.dnr).verdi)
                 .withFailMessage { "Dnr ${it.dnr} er gyldig" }
-            assertThat(it.fødselsdato).isEqualTo(Fødselsnummer(it.fnr).fødselsdato)
+            assertThat(it.fødselsdato).isEqualTo(Fodselsnummer(it.fnr).fødselsdato)
                 .withFailMessage { "Finner dato for ${it.fnr}" }
-            assertThat(it.fødselsdato).isEqualTo(Fødselsnummer(it.dnr).fødselsdato)
+            assertThat(it.fødselsdato).isEqualTo(Fodselsnummer(it.dnr).fødselsdato)
                 .withFailMessage { "Finner dato for ${it.dnr}" }
-            assertThat(false).isEqualTo(Fødselsnummer(it.fnr).erDNummer)
+            assertThat(false).isEqualTo(Fodselsnummer(it.fnr).erDNummer)
                 .withFailMessage { "${it.fnr} er ikke D-nummer" }
-            assertThat(true).isEqualTo(Fødselsnummer(it.dnr).erDNummer)
+            assertThat(true).isEqualTo(Fodselsnummer(it.dnr).erDNummer)
                 .withFailMessage { "${it.dnr} er D-nummer" }
         }
     }
