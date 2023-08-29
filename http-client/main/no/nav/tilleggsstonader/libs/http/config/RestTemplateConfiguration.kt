@@ -7,7 +7,6 @@ import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenExchangeClientIn
 import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenOnBehalfOfClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.ConsumerIdClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.MdcValuesPropagatingClientInterceptor
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,7 +19,6 @@ import java.time.temporal.ChronoUnit
 @Suppress("SpringFacetCodeInspection")
 @Configuration
 @Import(
-    RestTemplateBuilder::class,
     ConsumerIdClientInterceptor::class,
     BearerTokenClientInterceptor::class,
     BearerTokenClientCredentialsClientInterceptor::class,
@@ -28,7 +26,10 @@ import java.time.temporal.ChronoUnit
     BearerTokenExchangeClientInterceptor::class,
     MdcValuesPropagatingClientInterceptor::class,
 )
-class RestTemplateConfiguration {
+class RestTemplateConfiguration(
+    private val consumerIdClientInterceptor: ConsumerIdClientInterceptor,
+    private val mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
+) {
 
     @Primary
     @Bean
@@ -48,65 +49,66 @@ class RestTemplateConfiguration {
         )
     }
 
-    @Bean("basicRestTemplateBuilder")
-    fun basicRestTemplateBuilder(
+    @Bean("utenAuth")
+    fun restTemplateUtenAuth(
         restTemplateBuilder: RestTemplateBuilder,
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
-    ): RestTemplateBuilder {
-        return restTemplateBuilder
-            .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
-            .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
-            .additionalInterceptors(
-                consumerIdClientInterceptor,
-                mdcValuesPropagatingClientInterceptor,
-            )
-    }
-
-    @Bean("utenAuth")
-    fun restTemplateUtenAuth(
-        @Qualifier("basicRestTemplateBuilder") restTemplateBuilder: RestTemplateBuilder,
     ): RestOperations {
-        return restTemplateBuilder.build()
+        return restTemplateBuilder
+            .defaultBuilderConfig()
+            .build()
     }
 
     @Bean("tokenExchange")
     fun restTemplate(
-        @Qualifier("basicRestTemplateBuilder") restTemplateBuilder: RestTemplateBuilder,
+        restTemplateBuilder: RestTemplateBuilder,
         bearerTokenExchangeClientInterceptor: BearerTokenExchangeClientInterceptor,
     ): RestOperations {
         return restTemplateBuilder
+            .defaultBuilderConfig()
             .interceptors(bearerTokenExchangeClientInterceptor)
             .build()
     }
 
     @Bean("azure")
     fun restTemplateJwtBearer(
-        @Qualifier("basicRestTemplateBuilder") restTemplateBuilder: RestTemplateBuilder,
+        restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenClientInterceptor,
     ): RestOperations {
         return restTemplateBuilder
+            .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
     }
 
     @Bean("azureClientCredential")
     fun restTemplateClientCredentialBearer(
-        @Qualifier("basicRestTemplateBuilder") restTemplateBuilder: RestTemplateBuilder,
+        restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenClientCredentialsClientInterceptor,
     ): RestOperations {
         return restTemplateBuilder
+            .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
     }
 
     @Bean("azureOnBehalfOf")
     fun restTemplateOnBehalfOfBearer(
-        @Qualifier("basicRestTemplateBuilder") restTemplateBuilder: RestTemplateBuilder,
+        restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenOnBehalfOfClientInterceptor,
     ): RestOperations {
         return restTemplateBuilder
+            .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
     }
+
+    private fun RestTemplateBuilder.defaultBuilderConfig() = this
+        .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
+        .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
+        .additionalInterceptors(
+            consumerIdClientInterceptor,
+            mdcValuesPropagatingClientInterceptor,
+        )
 }

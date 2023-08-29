@@ -65,7 +65,7 @@ subprojects {
         publications {
             create<MavenPublication>("mavenJava") {
                 artifactId = project.name
-                version = project.findProperty("version")?.toString() ?: "0.0.0"
+                version = project.findProperty("version")?.toString() ?: "1.0-SNAPSHOT"
                 from(components["java"])
             }
         }
