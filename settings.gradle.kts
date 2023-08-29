@@ -6,3 +6,5 @@ plugins {
 
 include("http-client")
 include("log")
+include("pdl")
+include("sikkerhet")
