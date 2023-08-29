@@ -1,5 +1,5 @@
 dependencies {
-    implementation(project(":util"))
+    testImplementation(project(":util"))
 }
 
 tasks.sourcesJar {
