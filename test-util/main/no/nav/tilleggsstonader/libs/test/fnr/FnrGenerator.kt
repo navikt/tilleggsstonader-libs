@@ -44,11 +44,11 @@ object FnrGenerator {
 
         val siffer = verdi.chunked(1).map { it.toInt() }
 
-        val kontrollMod1 = 11 - (0..8).sumBy { k1Vekting[it] * siffer[it] } % 11
+        val kontrollMod1 = 11 - (0..8).sumOf { k1Vekting[it] * siffer[it] } % 11
         val kontrollsiffer1 = kontrollSiffer(kontrollMod1)
 
         val sifferMedEttKontrollsiffer = siffer + kontrollsiffer1
-        val kontrollMod2 = 11 - (0..9).sumBy { k2Vekting[it] * sifferMedEttKontrollsiffer[it] } % 11
+        val kontrollMod2 = 11 - (0..9).sumOf { k2Vekting[it] * sifferMedEttKontrollsiffer[it] } % 11
         val kontrollsiffer2 = kontrollSiffer(kontrollMod2)
 
         return verdi + kontrollsiffer1 + kontrollsiffer2

@@ -49,13 +49,8 @@ data class Fødselsnummer(val verdi: String) {
     }
 
     private fun gyldigKontrollSiffer(kontrollMod: Int, kontrollsiffer: Int): Boolean {
-        if (kontrollMod == kontrollsiffer) {
-            return true
-        }
-        if (kontrollMod == 11 && kontrollsiffer == 0) {
-            return true
-        }
-        return false
+        return kontrollMod == kontrollsiffer ||
+            kontrollMod == 11 && kontrollsiffer == 0
     }
 
     override fun toString(): String {
