@@ -2,7 +2,7 @@ package no.nav.tilleggsstonader.libs.utils.fnr
 
 import java.time.LocalDate
 
-data class Fodselsnummer(val verdi: String) {
+data class Fødselsnummer(val verdi: String) {
 
     init {
         check(gyldig(), verdi::toString)
