@@ -1,4 +1,4 @@
-val tokenSupportVersion = "3.1.4"
+val tokenSupportVersion = "3.1.3"
 val wiremockVersion = "2.35.0"
 
 plugins {
