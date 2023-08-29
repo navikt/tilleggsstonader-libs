@@ -1,12 +1,10 @@
-import org.jlleitschuh.gradle.ktlint.KtlintExtension
-
 val javaVersion = JavaLanguageVersion.of(17)
 
 plugins {
     kotlin("jvm") version "1.9.10"
     `maven-publish`
     `java-library`
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
+    id("com.diffplug.spotless") version "6.20.0"
 }
 
 allprojects {
@@ -14,9 +12,11 @@ allprojects {
         mavenCentral()
     }
 
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    configure<KtlintExtension> {
-        version.set("0.50.0")
+    apply(plugin = "com.diffplug.spotless")
+    spotless {
+        kotlin {
+            ktlint("0.50.0")
+        }
     }
 
     configurations.all {
@@ -80,6 +80,10 @@ subprojects {
                 }
             }
         }
+    }
+
+    if (project.hasProperty("skipLint")) {
+        gradle.startParameter.excludedTaskNames += "spotlessKotlinCheck"
     }
 
     kotlin.sourceSets["main"].kotlin.srcDirs("main")
