@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Primary
-import org.springframework.web.client.RestOperations
+import org.springframework.web.client.RestTemplate
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
@@ -54,7 +54,7 @@ class RestTemplateConfiguration(
         restTemplateBuilder: RestTemplateBuilder,
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
-    ): RestOperations {
+    ): RestTemplate {
         return restTemplateBuilder
             .defaultBuilderConfig()
             .build()
@@ -64,7 +64,7 @@ class RestTemplateConfiguration(
     fun restTemplate(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenExchangeClientInterceptor: BearerTokenExchangeClientInterceptor,
-    ): RestOperations {
+    ): RestTemplate {
         return restTemplateBuilder
             .defaultBuilderConfig()
             .interceptors(bearerTokenExchangeClientInterceptor)
@@ -75,7 +75,7 @@ class RestTemplateConfiguration(
     fun restTemplateJwtBearer(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenClientInterceptor,
-    ): RestOperations {
+    ): RestTemplate {
         return restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
@@ -86,7 +86,7 @@ class RestTemplateConfiguration(
     fun restTemplateClientCredentialBearer(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenClientCredentialsClientInterceptor,
-    ): RestOperations {
+    ): RestTemplate {
         return restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
@@ -97,7 +97,7 @@ class RestTemplateConfiguration(
     fun restTemplateOnBehalfOfBearer(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenOnBehalfOfClientInterceptor,
-    ): RestOperations {
+    ): RestTemplate {
         return restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
