@@ -3,7 +3,9 @@ package no.nav.tilleggsstonader.libs.http.client
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
 import com.github.tomakehurst.wiremock.client.WireMock.okJson
+import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.objectMapper
@@ -67,7 +69,7 @@ internal class AbstractRestClientTest {
     @Test
     fun `skal kunne kalle på tjeneste med uriVariables`() {
         wireMockServer.stubFor(
-            WireMock.get(WireMock.urlEqualTo("/api/test/123/data"))
+            WireMock.get(urlEqualTo("api/test/123/data"))
                 .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
@@ -81,7 +83,7 @@ internal class AbstractRestClientTest {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Feil")
         val body = objectMapper.writeValueAsString(problemDetail)
         wireMockServer.stubFor(
-            WireMock.get(WireMock.anyUrl())
+            WireMock.get(anyUrl())
                 .willReturn(aResponse().withStatus(500).withBody(body)),
         )
         val catchThrowable = catchThrowable { client.test() }
@@ -96,7 +98,7 @@ internal class AbstractRestClientTest {
     internal fun `feil med body som inneholder feltet status men ikke er en ressurs`() {
         val body = objectMapper.writeValueAsString(mapOf("status" to "nei"))
         wireMockServer.stubFor(
-            WireMock.get(WireMock.anyUrl())
+            WireMock.get(anyUrl())
                 .willReturn(aResponse().withStatus(500).withBody(body)),
         )
         val catchThrowable = catchThrowable { client.test() }
@@ -107,7 +109,7 @@ internal class AbstractRestClientTest {
     @Test
     internal fun `feil uten ressurs kaster videre spring exception`() {
         wireMockServer.stubFor(
-            WireMock.get(WireMock.anyUrl())
+            WireMock.get(anyUrl())
                 .willReturn(aResponse().withStatus(500)),
         )
         val catchThrowable = catchThrowable { client.test() }

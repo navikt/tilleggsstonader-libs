@@ -24,9 +24,6 @@ dependencies {
     api("no.nav.security:token-validation-spring:$tokenSupportVersion")
 
     testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:$wiremockVersion")
-
-    testImplementation("ch.qos.logback:logback-core")
-    testImplementation("ch.qos.logback:logback-classic")
 }
 
 tasks.sourcesJar {
