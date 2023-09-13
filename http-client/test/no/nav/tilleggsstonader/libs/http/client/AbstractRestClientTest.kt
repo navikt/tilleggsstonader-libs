@@ -69,7 +69,7 @@ internal class AbstractRestClientTest {
     @Test
     fun `skal kunne kalle på tjeneste med uriVariables`() {
         wireMockServer.stubFor(
-            WireMock.get(urlEqualTo("api/test/123/data"))
+            WireMock.get(urlEqualTo("/api/test/123/data"))
                 .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
