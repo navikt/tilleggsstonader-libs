@@ -11,6 +11,10 @@ plugins {
 allprojects {
     repositories {
         mavenCentral()
+
+        maven {
+            url = uri("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
+        }
     }
 
     apply(plugin = "com.diffplug.spotless")
