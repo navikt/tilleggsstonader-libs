@@ -17,7 +17,7 @@ import java.net.URI
 /**
  * Abstract klasse for å kalle rest-tjenester med metrics og utpakking av ev. body.
  */
-abstract class AbstractRestClient(val operations: RestTemplate) {
+abstract class AbstractRestClient(val restTemplate: RestTemplate) {
 
     protected val log: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -62,7 +62,7 @@ abstract class AbstractRestClient(val operations: RestTemplate) {
         uriVariables: Map<String, *> = emptyMap<String, String>(),
     ): T {
         try {
-            return operations.exchange<T>(urlTemplate, method, entity, uriVariables).body
+            return restTemplate.exchange<T>(urlTemplate, method, entity, uriVariables).body
                 ?: error("Mangler body")
         } catch (e: RestClientResponseException) {
             val url = expand(urlTemplate, uriVariables)
@@ -76,7 +76,7 @@ abstract class AbstractRestClient(val operations: RestTemplate) {
     }
 
     fun expand(urlTemplate: String, uriVariables: Map<String, *>): URI {
-        return operations.uriTemplateHandler.expand(urlTemplate, uriVariables)
+        return restTemplate.uriTemplateHandler.expand(urlTemplate, uriVariables)
     }
 
     fun readProblemDetail(e: RestClientResponseException): ProblemDetail? {
@@ -88,5 +88,5 @@ abstract class AbstractRestClient(val operations: RestTemplate) {
         }
     }
 
-    override fun toString(): String = this::class.simpleName + " [operations=" + operations + "]"
+    override fun toString(): String = this::class.simpleName + " [operations=" + restTemplate + "]"
 }
