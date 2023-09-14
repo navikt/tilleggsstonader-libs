@@ -10,6 +10,7 @@ import com.github.tomakehurst.wiremock.common.ConsoleNotifier
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.objectMapper
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -19,8 +20,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
+import org.springframework.web.client.HttpClientErrorException.NotFound
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 internal class AbstractRestClientTest {
@@ -33,6 +36,15 @@ internal class AbstractRestClientTest {
 
         fun testMedUriVariables() {
             getForEntity<Any>("$uri/api/test/{id}/data", uriVariables = mapOf("id" to "123"))
+        }
+
+        fun testMedUriComponentsBuilder() {
+            val uri = UriComponentsBuilder.fromUri(uri)
+                .pathSegment("api", "test", "{id}", "data")
+                .queryParam("userId", "{userId}")
+                .encode()
+                .toUriString()
+            getForEntity<Any>(uri, uriVariables = mapOf("id" to "123", "userId" to "id"))
         }
     }
 
@@ -76,6 +88,30 @@ internal class AbstractRestClientTest {
         assertDoesNotThrow {
             client.testMedUriVariables()
         }
+    }
+
+    @Test
+    fun `skal kunne kalle på tjeneste med uriVariables med UriComponentsBuilder`() {
+        wireMockServer.stubFor(
+            WireMock.get(urlEqualTo("/api/test/123/data?userId=id"))
+                .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
+        )
+
+        assertDoesNotThrow {
+            client.testMedUriComponentsBuilder()
+        }
+    }
+
+    @Test
+    fun `query param request skal feile hvis query params ikke mer med`() {
+        wireMockServer.stubFor(
+            WireMock.get(urlEqualTo("/api/test/123/data"))
+                .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
+        )
+
+        assertThatThrownBy {
+            client.testMedUriComponentsBuilder()
+        }.isInstanceOf(NotFound::class.java)
     }
 
     @Test

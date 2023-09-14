@@ -1,4 +1,5 @@
 dependencies {
+    implementation("org.assertj:assertj-core")
     testImplementation(project(":util"))
 }
 
