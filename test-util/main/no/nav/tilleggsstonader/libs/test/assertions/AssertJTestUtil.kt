@@ -1,4 +1,4 @@
-package no.nav.tilleggsstonader.libs.test.fnr
+package no.nav.tilleggsstonader.libs.test.assertions
 
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
