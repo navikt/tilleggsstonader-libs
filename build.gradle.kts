@@ -5,7 +5,7 @@ plugins {
     `maven-publish`
     `java-library`
     id("com.diffplug.spotless") version "6.21.0"
-    id("com.github.ben-manes.versions") version "0.47.0"
+    id("com.github.ben-manes.versions") version "0.48.0"
 }
 
 allprojects {
