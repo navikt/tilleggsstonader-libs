@@ -2,6 +2,7 @@ package no.nav.tilleggsstonader.libs.utils.fnr
 
 import java.time.LocalDate
 
+@Deprecated("Bruk ident fra kontrakter")
 data class Fødselsnummer(val verdi: String) {
 
     init {
