@@ -14,6 +14,8 @@ object VirkedagerProvider {
         MonthDay.of(12, 26),
     )
 
+    private val bevegeligeHellidager = mutableMapOf<Int, Set<MonthDay>>()
+
     private fun beregnBevegeligeHelligdager(år: Int): Set<MonthDay> {
         val påskedag = utledPåskedag(år)
         val skjærTorsdag = påskedag.minusDays(3)
@@ -34,6 +36,10 @@ object VirkedagerProvider {
         )
     }
 
+    private fun hentBevegeligeHellidager(år: Int): Set<MonthDay> {
+        return bevegeligeHellidager.getOrPut(år) { beregnBevegeligeHelligdager(år) }
+    }
+
     fun nesteVirkedag(dagensDato: LocalDate): LocalDate {
         var nesteDag = dagensDato.plusDays(1)
 
@@ -43,8 +49,8 @@ object VirkedagerProvider {
         return nesteDag
     }
 
-    private fun erHelgEllerHelligdag(dato: LocalDate): Boolean {
-        val helligDager = FASTE_HELLIGDAGER + beregnBevegeligeHelligdager(dato.year)
+    fun erHelgEllerHelligdag(dato: LocalDate): Boolean {
+        val helligDager = FASTE_HELLIGDAGER + hentBevegeligeHellidager(dato.year)
 
         return dato.dayOfWeek == DayOfWeek.SATURDAY ||
             dato.dayOfWeek == DayOfWeek.SUNDAY ||
