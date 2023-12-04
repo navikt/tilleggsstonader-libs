@@ -1,5 +1,5 @@
 val tokenSupportVersion = "3.2.0"
-val wiremockVersion = "2.35.0"
+val wiremockVersion = "3.0.1"
 val tilleggsstønaderKontrakterVersion = "2023.12.04-12.03.40d61264fa02"
 
 plugins {
