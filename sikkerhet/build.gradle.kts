@@ -1,7 +1,7 @@
-val tokenSupportVersion = "3.1.5"
+val tokenSupportVersion = "3.2.0"
 
 plugins {
-    kotlin("plugin.spring") version "1.9.10"
+    kotlin("plugin.spring") version "1.9.21"
 }
 
 dependencies {
