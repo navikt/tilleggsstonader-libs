@@ -76,7 +76,7 @@ abstract class AbstractRestClient(val restTemplate: RestTemplate) {
         urlTemplate: String,
         method: HttpMethod,
         entity: HttpEntity<*>,
-        uriVariables: Map<String, *>
+        uriVariables: Map<String, *>,
     ): T? {
         try {
             return restTemplate.exchange<T>(urlTemplate, method, entity, uriVariables).body
