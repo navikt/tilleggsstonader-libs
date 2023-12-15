@@ -34,6 +34,13 @@ abstract class AbstractRestClient(val restTemplate: RestTemplate) {
         uriVariables: Map<String, *> = emptyMap<String, String>(),
     ): T = execute(uri, HttpMethod.POST, HttpEntity(payload, httpHeaders), uriVariables)
 
+    inline fun <reified T : Any> postForEntityNullable(
+        uri: String,
+        payload: Any,
+        httpHeaders: HttpHeaders? = null,
+        uriVariables: Map<String, *> = emptyMap<String, String>(),
+    ): T? = executeNullable(uri, HttpMethod.POST, HttpEntity(payload, httpHeaders), uriVariables)
+
     inline fun <reified T : Any> putForEntity(
         uri: String,
         payload: Any,
@@ -55,15 +62,24 @@ abstract class AbstractRestClient(val restTemplate: RestTemplate) {
         uriVariables: Map<String, *> = emptyMap<String, String>(),
     ): T = execute(uri, HttpMethod.DELETE, HttpEntity(payload, httpHeaders), uriVariables)
 
-    inline fun <reified T> execute(
+    inline fun <reified T : Any> execute(
         urlTemplate: String,
         method: HttpMethod,
         entity: HttpEntity<*>,
         uriVariables: Map<String, *> = emptyMap<String, String>(),
     ): T {
+        return executeNullable<T>(urlTemplate, method, entity, uriVariables)
+            ?: error("Mangler body")
+    }
+
+    inline fun <reified T : Any> executeNullable(
+        urlTemplate: String,
+        method: HttpMethod,
+        entity: HttpEntity<*>,
+        uriVariables: Map<String, *>
+    ): T? {
         try {
             return restTemplate.exchange<T>(urlTemplate, method, entity, uriVariables).body
-                ?: error("Mangler body")
         } catch (e: RestClientResponseException) {
             val url = expand(urlTemplate, uriVariables)
             secureLogger.warn("Feil ved kall method=$method mot url=$url", e)

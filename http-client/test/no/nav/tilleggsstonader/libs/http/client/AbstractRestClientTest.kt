@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
+import com.github.tomakehurst.wiremock.client.WireMock.created
 import com.github.tomakehurst.wiremock.client.WireMock.okJson
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier
@@ -45,6 +46,10 @@ internal class AbstractRestClientTest {
                 .encode()
                 .toUriString()
             getForEntity<Any>(uri, uriVariables = mapOf("id" to "123", "userId" to "id"))
+        }
+
+        fun postUtenResponseBody(): String? {
+            return postForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
         }
     }
 
@@ -100,6 +105,16 @@ internal class AbstractRestClientTest {
         assertDoesNotThrow {
             client.testMedUriComponentsBuilder()
         }
+    }
+
+    @Test
+    fun `skal kunne kalle på endepunkt og forvente svar uten body`() {
+        wireMockServer.stubFor(
+            WireMock.post(anyUrl())
+                .willReturn(created()),
+        )
+
+        assertThat(client.postUtenResponseBody()).isNull()
     }
 
     @Test
