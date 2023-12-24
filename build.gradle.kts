@@ -1,7 +1,7 @@
 val javaVersion = JavaLanguageVersion.of(21)
 
 plugins {
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version "1.9.22"
     `maven-publish`
     `java-library`
     id("com.diffplug.spotless") version "6.23.3"
@@ -44,7 +44,7 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.0"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.1"))
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.assertj:assertj-core")
