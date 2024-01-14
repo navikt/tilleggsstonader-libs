@@ -48,7 +48,7 @@ subprojects {
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.assertj:assertj-core")
-        testImplementation("io.mockk:mockk:1.13.8")
+        testImplementation("io.mockk:mockk:1.13.9")
 
         testImplementation("ch.qos.logback:logback-core")
         testImplementation("ch.qos.logback:logback-classic")
