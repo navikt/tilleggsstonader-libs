@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.9.22"
     `maven-publish`
     `java-library`
-    id("com.diffplug.spotless") version "6.23.3"
+    id("com.diffplug.spotless") version "6.24.0"
     id("com.github.ben-manes.versions") version "0.50.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.18"
 }
@@ -44,11 +44,11 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.1"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.2"))
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.assertj:assertj-core")
-        testImplementation("io.mockk:mockk:1.13.8")
+        testImplementation("io.mockk:mockk:1.13.9")
 
         testImplementation("ch.qos.logback:logback-core")
         testImplementation("ch.qos.logback:logback-classic")
