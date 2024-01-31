@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-
 @Configuration
 class UnleashConfiguration(
     private val strategies: List<Strategy>,
@@ -35,7 +34,7 @@ class UnleashConfiguration(
     fun dummyUnleashService(): UnleashService {
         logger.warn(
             "Funksjonsbryter-funksjonalitet er skrudd AV. " +
-                    "isEnabled gir 'false' med mindre man har oppgitt en annen default verdi.",
+                "isEnabled gir 'false' med mindre man har oppgitt en annen default verdi.",
         )
         return DummyUnleashService()
     }
