@@ -1,6 +1,7 @@
 package no.nav.tilleggsstonader.libs.sikkerhet
 
 import no.nav.security.token.support.core.context.TokenValidationContext
+import no.nav.security.token.support.core.exceptions.JwtTokenMissingException
 import no.nav.security.token.support.core.exceptions.JwtTokenValidatorException
 import no.nav.security.token.support.core.jwt.JwtTokenClaims
 import no.nav.security.token.support.spring.SpringTokenValidationContextHolder
@@ -29,7 +30,7 @@ object EksternBrukerUtils {
 
     fun getBearerTokenForLoggedInUser(): String {
         return getFromContext { validationContext, issuer ->
-            validationContext.getJwtToken(issuer).tokenAsString
+            validationContext.getJwtToken(issuer)?.encodedToken ?: throw JwtTokenMissingException()
         }
     }
 
