@@ -7,11 +7,14 @@ import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenExchangeClientIn
 import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenOnBehalfOfClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.ConsumerIdClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.MdcValuesPropagatingClientInterceptor
+import org.springframework.boot.web.client.ClientHttpRequestFactories
+import org.springframework.boot.web.client.ClientHttpRequestFactorySettings
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Primary
+import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
 import java.time.Duration
 import java.time.temporal.ChronoUnit
@@ -34,19 +37,19 @@ class RestTemplateConfiguration(
     @Primary
     @Bean
     fun oAuth2HttpClient(
-        restTemplateBuilder: RestTemplateBuilder,
+        restClientBuilder: RestClient.Builder,
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
     ): RetryOAuth2HttpClient {
-        return RetryOAuth2HttpClient(
-            restTemplateBuilder
-                .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
-                .setReadTimeout(Duration.of(4, ChronoUnit.SECONDS))
-                .additionalInterceptors(
-                    consumerIdClientInterceptor,
-                    mdcValuesPropagatingClientInterceptor,
-                ),
-        )
+        val clientHttpRequestFactorySettings = ClientHttpRequestFactorySettings.DEFAULTS
+            .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
+            .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
+        val restClient = restClientBuilder
+            .requestFactory(ClientHttpRequestFactories.get(clientHttpRequestFactorySettings))
+            .requestInterceptor(consumerIdClientInterceptor)
+            .requestInterceptor(mdcValuesPropagatingClientInterceptor)
+            .build()
+        return RetryOAuth2HttpClient(restClient)
     }
 
     @Bean("utenAuth")

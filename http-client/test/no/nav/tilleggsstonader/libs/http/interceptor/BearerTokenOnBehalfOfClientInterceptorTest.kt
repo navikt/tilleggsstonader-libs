@@ -33,7 +33,7 @@ internal class BearerTokenOnBehalfOfClientInterceptorTest {
 
         bearerTokenClientInterceptor.intercept(req, ByteArray(0), execution)
 
-        verify { oAuth2AccessTokenService.getAccessToken(clientConfigurationProperties.registration["2"]) }
+        verify { oAuth2AccessTokenService.getAccessToken(clientConfigurationProperties.registration["2"]!!) }
     }
 
     @Test
@@ -50,6 +50,6 @@ internal class BearerTokenOnBehalfOfClientInterceptorTest {
                 )
             },
         )
-            .hasMessage("could not find oauth2 client config for uri=http://clientResource.no and grant type=OAuth2GrantType[value=urn:ietf:params:oauth:grant-type:jwt-bearer]")
+            .hasMessage("could not find oauth2 client config for uri=http://clientResource.no and grant type=urn:ietf:params:oauth:grant-type:jwt-bearer")
     }
 }
