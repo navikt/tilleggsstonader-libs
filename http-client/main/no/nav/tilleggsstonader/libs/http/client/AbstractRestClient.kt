@@ -41,6 +41,13 @@ abstract class AbstractRestClient(val restTemplate: RestTemplate) {
         uriVariables: Map<String, *> = emptyMap<String, String>(),
     ): T? = executeNullable(uri, HttpMethod.POST, HttpEntity(payload, httpHeaders), uriVariables)
 
+    inline fun <reified T : Any> putForEntityNullable(
+        uri: String,
+        payload: Any,
+        httpHeaders: HttpHeaders? = null,
+        uriVariables: Map<String, *> = emptyMap<String, String>(),
+    ): T? = executeNullable(uri, HttpMethod.PUT, HttpEntity(payload, httpHeaders), uriVariables)
+
     inline fun <reified T : Any> putForEntity(
         uri: String,
         payload: Any,
