@@ -51,6 +51,9 @@ internal class AbstractRestClientTest {
         fun postUtenResponseBody(): String? {
             return postForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
         }
+        fun putUtenResponseBody(): String? {
+            return putForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
+        }
     }
 
     companion object {
@@ -115,6 +118,16 @@ internal class AbstractRestClientTest {
         )
 
         assertThat(client.postUtenResponseBody()).isNull()
+    }
+
+    @Test
+    fun `skal kunne kalle på put-endepunkt og forvente svar uten body`() {
+        wireMockServer.stubFor(
+            WireMock.put(anyUrl())
+                .willReturn(created()),
+        )
+
+        assertThat(client.putUtenResponseBody()).isNull()
     }
 
     @Test
