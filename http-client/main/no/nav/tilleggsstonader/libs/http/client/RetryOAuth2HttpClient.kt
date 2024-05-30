@@ -43,7 +43,6 @@ class RetryOAuth2HttpClient(
         retries: Int,
         oAuth2HttpRequest: OAuth2HttpRequest,
     ) {
-        e.printStackTrace()
         if (shouldRetry(e) && retries < maxRetries) {
             logger.warn(
                 "Kall mot url=${oAuth2HttpRequest.tokenEndpointUrl} feilet, cause=${
