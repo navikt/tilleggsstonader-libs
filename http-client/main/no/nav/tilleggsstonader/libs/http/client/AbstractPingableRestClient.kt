@@ -12,5 +12,4 @@ abstract class AbstractPingableRestClient(restTemplate: RestTemplate) : Abstract
     override fun toString(): String {
         return this::class.simpleName + "[restTemplate=" + restTemplate + "]"
     }
-
 }
