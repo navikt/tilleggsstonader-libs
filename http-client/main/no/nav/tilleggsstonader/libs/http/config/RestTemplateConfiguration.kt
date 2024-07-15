@@ -118,8 +118,7 @@ class RestTemplateConfiguration(
                 consumerIdClientInterceptor,
                 bearerTokenClientInterceptor,
                 MdcValuesPropagatingClientInterceptor(),
-            )
-            .setConnectTimeout(Duration.ofSeconds(20))
+            ).setConnectTimeout(Duration.ofSeconds(20))
             .setReadTimeout(Duration.ofSeconds(20))
             .build()
 
