@@ -109,7 +109,7 @@ class RestTemplateConfiguration(
 
     // Ekspirmentell som har inn identisk config som familie har då azure-graph feiler
     @Bean("jwtBearer")
-    fun restTemplateJwtBearer(
+    fun restTemplateAzueJwtBearer(
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
         bearerTokenClientInterceptor: BearerTokenClientInterceptor,
     ): RestTemplate =
