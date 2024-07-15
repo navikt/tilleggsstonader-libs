@@ -107,6 +107,22 @@ class RestTemplateConfiguration(
             .build()
     }
 
+    // Ekspirmentell som har inn identisk config som familie har då azure-graph feiler
+    @Bean("jwtBearer")
+    fun restTemplateJwtBearer(
+        consumerIdClientInterceptor: ConsumerIdClientInterceptor,
+        bearerTokenClientInterceptor: BearerTokenClientInterceptor,
+    ): RestTemplate =
+        RestTemplateBuilder()
+            .interceptors(
+                consumerIdClientInterceptor,
+                bearerTokenClientInterceptor,
+                MdcValuesPropagatingClientInterceptor(),
+            ).setConnectTimeout(Duration.ofSeconds(20))
+            .setReadTimeout(Duration.ofSeconds(20))
+            .build()
+
+
     private fun RestTemplateBuilder.defaultBuilderConfig() = this
         .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
         .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
