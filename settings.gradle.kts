@@ -6,6 +6,7 @@ plugins {
 
 include("http-client")
 include("log")
+include("kafka")
 include("sikkerhet")
 include("util")
 include("unleash")
