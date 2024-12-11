@@ -3,6 +3,7 @@ package no.nav.tilleggsstonader.libs.http.client
 import no.nav.security.token.support.client.core.http.OAuth2HttpRequest
 import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenResponse
 import no.nav.security.token.support.client.spring.oauth2.DefaultOAuth2HttpClient
+import org.apache.hc.core5.http.NoHttpResponseException
 import org.slf4j.LoggerFactory
 import org.springframework.core.NestedExceptionUtils
 import org.springframework.web.client.HttpServerErrorException
@@ -23,6 +24,7 @@ class RetryOAuth2HttpClient(
         SocketException::class,
         SocketTimeoutException::class,
         HttpServerErrorException.GatewayTimeout::class,
+        NoHttpResponseException::class,
     )
 
     override fun post(req: OAuth2HttpRequest): OAuth2AccessTokenResponse {

@@ -71,6 +71,13 @@ internal class RetryOAuth2HttpClientTest {
         wireMockServer.verify(3, RequestPatternBuilder.allRequests())
     }
 
+    @Test
+    internal fun `fault - skal prøve på nytt hvis servern feiler med å svare`() {
+        stub(WireMock.aResponse().withBody("{}").withFault(Fault.EMPTY_RESPONSE))
+        post()
+        wireMockServer.verify(3, RequestPatternBuilder.allRequests())
+    }
+
     private fun stub(responseDefinitionBuilder: ResponseDefinitionBuilder?) {
         wireMockServer.stubFor(
             WireMock.post(WireMock.anyUrl())
