@@ -50,12 +50,13 @@ class LogFilter(val sporBruker: Boolean) : HttpFilter() {
         if (!sporBruker) {
             return
         }
-        val userId = resolveUserId(request)
+        var userId = resolveUserId(request)
         if (userId.isNullOrEmpty()) {
             // user-id tracking only works if the client is stateful and supports cookies.
             // if no user-id is found, generate one for any following requests but do not use it on the
             // current request to avoid generating large numbers of useless user-ids.
-            generateUserIdCookie(response)
+            userId = IdUtils.generateId()
+            generateUserIdCookie(response, userId)
         }
         MDC.put(MDC_USER_ID, userId)
     }
@@ -95,8 +96,7 @@ class LogFilter(val sporBruker: Boolean) : HttpFilter() {
             ?: IdUtils.generateId()
     }
 
-    private fun generateUserIdCookie(response: HttpServletResponse) {
-        val userId = IdUtils.generateId()
+    private fun generateUserIdCookie(response: HttpServletResponse, userId: String) {
         val cookie = Cookie(RANDOM_USER_ID_COOKIE_NAME, userId).apply {
             path = "/"
             maxAge = ONE_MONTH_IN_SECONDS

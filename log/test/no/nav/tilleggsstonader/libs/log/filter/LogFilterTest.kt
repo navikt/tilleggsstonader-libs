@@ -5,6 +5,7 @@ import io.mockk.mockk
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import no.nav.tilleggsstonader.libs.log.NavHttpHeaders
+import no.nav.tilleggsstonader.libs.log.mdc.MDCConstants
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -14,7 +15,7 @@ class LogFilterTest {
 
     private lateinit var httpServletRequest: HttpServletRequest
     private lateinit var httpServletResponse: HttpServletResponse
-    private val logFilter = LogFilter()
+    private val logFilter = LogFilter(true)
 
     @BeforeEach
     fun setup() {
@@ -50,6 +51,22 @@ class LogFilterTest {
 
         assertThat(httpServletResponse.status)
             .isEqualTo(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+    }
+
+    @Test
+    fun `skal ikke logge bruker hvis sporBruker=true`() {
+        logFilter.doFilter(httpServletRequest, httpServletResponse) { _, _ ->
+            assertThat(MDC.get(MDCConstants.MDC_USER_ID)).isNotNull()
+        }
+    }
+
+    @Test
+    fun `skal ikke logge bruker hvis sporBruker=false`() {
+        val logFilter = LogFilter(sporBruker = false)
+
+        logFilter.doFilter(httpServletRequest, httpServletResponse) { _, _ ->
+            assertThat(MDC.get(MDCConstants.MDC_USER_ID)).isNull()
+        }
     }
 
     private val mockHttpServletRequest = mockk<HttpServletRequest>(relaxed = true).also {
