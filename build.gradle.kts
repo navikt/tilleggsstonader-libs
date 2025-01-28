@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "2.0.21"
     `maven-publish`
     `java-library`
-    id("com.diffplug.spotless") version "6.25.0"
+    id("com.diffplug.spotless") version "7.0.1"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.18"
 }
@@ -23,7 +23,7 @@ allprojects {
     apply(plugin = "se.patrikerdes.use-latest-versions")
     spotless {
         kotlin {
-            ktlint("0.50.0")
+            ktlint("1.5.0")
         }
     }
 
