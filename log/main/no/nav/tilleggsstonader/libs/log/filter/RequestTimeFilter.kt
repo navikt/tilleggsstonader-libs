@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.util.StopWatch
 
 class RequestTimeFilter : HttpFilter() {
-
     override fun doFilter(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -25,7 +24,11 @@ class RequestTimeFilter : HttpFilter() {
         }
     }
 
-    private fun log(request: HttpServletRequest, code: Int, timer: StopWatch) {
+    private fun log(
+        request: HttpServletRequest,
+        code: Int,
+        timer: StopWatch,
+    ) {
         if (HttpStatus.valueOf(code).isError) {
             LOG.warn("{} - {} - ({}). Dette tok {}ms", request.method, request.requestURI, code, timer.totalTimeMillis)
         } else {
@@ -41,9 +44,7 @@ class RequestTimeFilter : HttpFilter() {
         }
     }
 
-    private fun shouldNotFilter(uri: String): Boolean {
-        return uri.contains("/internal") || uri == "/api/ping"
-    }
+    private fun shouldNotFilter(uri: String): Boolean = uri.contains("/internal") || uri == "/api/ping"
 
     companion object {
         private val LOG = LoggerFactory.getLogger(RequestTimeFilter::class.java)

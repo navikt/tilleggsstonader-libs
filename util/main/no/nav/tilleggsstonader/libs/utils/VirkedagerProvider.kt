@@ -5,14 +5,14 @@ import java.time.LocalDate
 import java.time.MonthDay
 
 object VirkedagerProvider {
-
-    private val FASTE_HELLIGDAGER = setOf(
-        MonthDay.of(1, 1),
-        MonthDay.of(5, 1),
-        MonthDay.of(5, 17),
-        MonthDay.of(12, 25),
-        MonthDay.of(12, 26),
-    )
+    private val FASTE_HELLIGDAGER =
+        setOf(
+            MonthDay.of(1, 1),
+            MonthDay.of(5, 1),
+            MonthDay.of(5, 17),
+            MonthDay.of(12, 25),
+            MonthDay.of(12, 26),
+        )
 
     private val bevegeligeHellidager = mutableMapOf<Int, Set<MonthDay>>()
 
@@ -36,9 +36,7 @@ object VirkedagerProvider {
         )
     }
 
-    private fun hentBevegeligeHellidager(år: Int): Set<MonthDay> {
-        return bevegeligeHellidager.getOrPut(år) { beregnBevegeligeHelligdager(år) }
-    }
+    private fun hentBevegeligeHellidager(år: Int): Set<MonthDay> = bevegeligeHellidager.getOrPut(år) { beregnBevegeligeHelligdager(år) }
 
     fun nesteVirkedag(dagensDato: LocalDate): LocalDate {
         var nesteDag = dagensDato.plusDays(1)

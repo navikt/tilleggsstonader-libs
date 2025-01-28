@@ -9,18 +9,17 @@ internal class DummyUnleashService : UnleashService {
     override fun isEnabled(
         toggle: ToggleId,
         properties: Map<String, String>,
-    ): Boolean {
-        return isEnabled(toggle, false)
-    }
+    ): Boolean = isEnabled(toggle, false)
 
     override fun isEnabled(
         toggle: ToggleId,
         defaultValue: Boolean,
-    ): Boolean {
-        return System.getenv(toggle.toggleId).run { toBoolean() }
-    }
+    ): Boolean = System.getenv(toggle.toggleId).run { toBoolean() }
 
-    override fun getVariant(toggle: ToggleId, defaultValue: Variant): Variant {
+    override fun getVariant(
+        toggle: ToggleId,
+        defaultValue: Variant,
+    ): Variant {
         error("Støtter ikke variant i ${this.javaClass::getSimpleName}")
     }
 

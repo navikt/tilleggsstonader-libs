@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class LogFilterConfiguration {
-
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Bean

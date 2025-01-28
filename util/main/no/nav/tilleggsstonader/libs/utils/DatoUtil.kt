@@ -7,4 +7,5 @@ import java.time.ZoneId
 val ZONE_ID_OSLO: ZoneId = ZoneId.of("Europe/Oslo")
 
 fun osloNow(): LocalDateTime = LocalDateTime.now(ZONE_ID_OSLO)
+
 fun osloDateNow(): LocalDate = LocalDate.now(ZONE_ID_OSLO)

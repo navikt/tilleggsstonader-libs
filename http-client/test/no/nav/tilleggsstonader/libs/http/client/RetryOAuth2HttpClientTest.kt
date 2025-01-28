@@ -20,15 +20,17 @@ import java.time.Duration
 import java.time.temporal.ChronoUnit
 
 internal class RetryOAuth2HttpClientTest {
-
-    val clientHttpRequestFactorySettings = ClientHttpRequestFactorySettings.DEFAULTS
-        .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
-        .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
+    val clientHttpRequestFactorySettings =
+        ClientHttpRequestFactorySettings.DEFAULTS
+            .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
+            .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
 
     val requestFactory = ClientHttpRequestFactories.get(clientHttpRequestFactorySettings)
-    val restClient = RestClient.builder()
-        .requestFactory(requestFactory)
-        .build()
+    val restClient =
+        RestClient
+            .builder()
+            .requestFactory(requestFactory)
+            .build()
     val client = RetryOAuth2HttpClient(restClient)
 
     @BeforeEach
@@ -80,15 +82,17 @@ internal class RetryOAuth2HttpClientTest {
 
     private fun stub(responseDefinitionBuilder: ResponseDefinitionBuilder?) {
         wireMockServer.stubFor(
-            WireMock.post(WireMock.anyUrl())
+            WireMock
+                .post(WireMock.anyUrl())
                 .willReturn(responseDefinitionBuilder),
         )
     }
 
-    private fun post(): Exception? {
-        return try {
+    private fun post(): Exception? =
+        try {
             client.post(
-                OAuth2HttpRequest.builder(URI.create(wireMockServer.baseUrl()))
+                OAuth2HttpRequest
+                    .builder(URI.create(wireMockServer.baseUrl()))
                     .oAuth2HttpHeaders(OAuth2HttpHeaders.builder().build())
                     .build(),
             )
@@ -96,10 +100,8 @@ internal class RetryOAuth2HttpClientTest {
         } catch (e: Exception) {
             e
         }
-    }
 
     companion object {
-
         private lateinit var wireMockServer: WireMockServer
 
         @BeforeAll

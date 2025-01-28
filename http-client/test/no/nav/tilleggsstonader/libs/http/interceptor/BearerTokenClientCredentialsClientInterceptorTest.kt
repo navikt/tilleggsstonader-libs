@@ -13,17 +13,17 @@ import org.springframework.http.client.ClientHttpRequestExecution
 import java.net.URI
 
 internal class BearerTokenClientCredentialsClientInterceptorTest {
-
     private lateinit var bearerTokenClientInterceptor: BearerTokenClientCredentialsClientInterceptor
 
     private val oAuth2AccessTokenService = mockk<OAuth2AccessTokenService>(relaxed = true)
 
     @BeforeEach
     fun setup() {
-        bearerTokenClientInterceptor = BearerTokenClientCredentialsClientInterceptor(
-            oAuth2AccessTokenService,
-            clientConfigurationProperties,
-        )
+        bearerTokenClientInterceptor =
+            BearerTokenClientCredentialsClientInterceptor(
+                oAuth2AccessTokenService,
+                clientConfigurationProperties,
+            )
     }
 
     @Test

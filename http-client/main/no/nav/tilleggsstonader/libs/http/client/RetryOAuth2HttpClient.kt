@@ -15,17 +15,17 @@ class RetryOAuth2HttpClient(
     restClient: RestClient,
     private val maxRetries: Int = 2,
 ) : DefaultOAuth2HttpClient(restClient) {
-
     private val logger = LoggerFactory.getLogger(javaClass)
     private val secureLogger = LoggerFactory.getLogger("secureLogger")
 
     // ServiceUnavailable håndteres av apache http-client
-    private val retryExceptions = setOf(
-        SocketException::class,
-        SocketTimeoutException::class,
-        HttpServerErrorException.GatewayTimeout::class,
-        NoHttpResponseException::class,
-    )
+    private val retryExceptions =
+        setOf(
+            SocketException::class,
+            SocketTimeoutException::class,
+            HttpServerErrorException.GatewayTimeout::class,
+            NoHttpResponseException::class,
+        )
 
     override fun post(req: OAuth2HttpRequest): OAuth2AccessTokenResponse {
         var retries = 0
@@ -57,7 +57,5 @@ class RetryOAuth2HttpClient(
         }
     }
 
-    private fun shouldRetry(e: Exception): Boolean {
-        return retryExceptions.contains(e.cause?.let { it::class })
-    }
+    private fun shouldRetry(e: Exception): Boolean = retryExceptions.contains(e.cause?.let { it::class })
 }

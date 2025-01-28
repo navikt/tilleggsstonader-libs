@@ -33,7 +33,6 @@ class RestTemplateConfiguration(
     private val consumerIdClientInterceptor: ConsumerIdClientInterceptor,
     private val mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
 ) {
-
     @Primary
     @Bean
     fun oAuth2HttpClient(
@@ -41,14 +40,16 @@ class RestTemplateConfiguration(
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
     ): RetryOAuth2HttpClient {
-        val clientHttpRequestFactorySettings = ClientHttpRequestFactorySettings.DEFAULTS
-            .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
-            .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
-        val restClient = restClientBuilder
-            .requestFactory(ClientHttpRequestFactories.get(clientHttpRequestFactorySettings))
-            .requestInterceptor(consumerIdClientInterceptor)
-            .requestInterceptor(mdcValuesPropagatingClientInterceptor)
-            .build()
+        val clientHttpRequestFactorySettings =
+            ClientHttpRequestFactorySettings.DEFAULTS
+                .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
+                .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
+        val restClient =
+            restClientBuilder
+                .requestFactory(ClientHttpRequestFactories.get(clientHttpRequestFactorySettings))
+                .requestInterceptor(consumerIdClientInterceptor)
+                .requestInterceptor(mdcValuesPropagatingClientInterceptor)
+                .build()
         return RetryOAuth2HttpClient(restClient)
     }
 
@@ -57,61 +58,57 @@ class RestTemplateConfiguration(
         restTemplateBuilder: RestTemplateBuilder,
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
-    ): RestTemplate {
-        return restTemplateBuilder
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .build()
-    }
 
     @Bean("tokenExchange")
     fun restTemplate(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenExchangeClientInterceptor: BearerTokenExchangeClientInterceptor,
-    ): RestTemplate {
-        return restTemplateBuilder
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .interceptors(bearerTokenExchangeClientInterceptor)
             .build()
-    }
 
     @Bean("azure")
     fun restTemplateJwtBearer(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenClientInterceptor,
-    ): RestTemplate {
-        return restTemplateBuilder
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
-    }
 
     @Bean("azureClientCredential")
     fun restTemplateClientCredentialBearer(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenClientCredentialsClientInterceptor,
-    ): RestTemplate {
-        return restTemplateBuilder
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
-    }
 
     @Bean("azureOnBehalfOf")
     fun restTemplateOnBehalfOfBearer(
         restTemplateBuilder: RestTemplateBuilder,
         bearerTokenClientInterceptor: BearerTokenOnBehalfOfClientInterceptor,
-    ): RestTemplate {
-        return restTemplateBuilder
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
-    }
 
-    private fun RestTemplateBuilder.defaultBuilderConfig() = this
-        .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
-        .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
-        .additionalInterceptors(
-            consumerIdClientInterceptor,
-            mdcValuesPropagatingClientInterceptor,
-        )
+    private fun RestTemplateBuilder.defaultBuilderConfig() =
+        this
+            .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
+            .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
+            .additionalInterceptors(
+                consumerIdClientInterceptor,
+                mdcValuesPropagatingClientInterceptor,
+            )
 }

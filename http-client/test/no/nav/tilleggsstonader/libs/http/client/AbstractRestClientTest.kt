@@ -28,9 +28,9 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 internal class AbstractRestClientTest {
-
-    class TestClient(val uri: URI) : AbstractRestClient(RestTemplate()) {
-
+    class TestClient(
+        val uri: URI,
+    ) : AbstractRestClient(RestTemplate()) {
         fun test() {
             getForEntity<Any>(uri.toString())
         }
@@ -40,24 +40,22 @@ internal class AbstractRestClientTest {
         }
 
         fun testMedUriComponentsBuilder() {
-            val uri = UriComponentsBuilder.fromUri(uri)
-                .pathSegment("api", "test", "{id}", "data")
-                .queryParam("userId", "{userId}")
-                .encode()
-                .toUriString()
+            val uri =
+                UriComponentsBuilder
+                    .fromUri(uri)
+                    .pathSegment("api", "test", "{id}", "data")
+                    .queryParam("userId", "{userId}")
+                    .encode()
+                    .toUriString()
             getForEntity<Any>(uri, uriVariables = mapOf("id" to "123", "userId" to "id"))
         }
 
-        fun postUtenResponseBody(): String? {
-            return postForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
-        }
-        fun putUtenResponseBody(): String? {
-            return putForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
-        }
+        fun postUtenResponseBody(): String? = postForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
+
+        fun putUtenResponseBody(): String? = putForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
     }
 
     companion object {
-
         private lateinit var wireMockServer: WireMockServer
         private lateinit var client: TestClient
 
@@ -89,7 +87,8 @@ internal class AbstractRestClientTest {
     @Test
     fun `skal kunne kalle på tjeneste med uriVariables`() {
         wireMockServer.stubFor(
-            WireMock.get(urlEqualTo("/api/test/123/data"))
+            WireMock
+                .get(urlEqualTo("/api/test/123/data"))
                 .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
@@ -101,7 +100,8 @@ internal class AbstractRestClientTest {
     @Test
     fun `skal kunne kalle på tjeneste med uriVariables med UriComponentsBuilder`() {
         wireMockServer.stubFor(
-            WireMock.get(urlEqualTo("/api/test/123/data?userId=id"))
+            WireMock
+                .get(urlEqualTo("/api/test/123/data?userId=id"))
                 .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
@@ -113,7 +113,8 @@ internal class AbstractRestClientTest {
     @Test
     fun `skal kunne kalle på endepunkt og forvente svar uten body`() {
         wireMockServer.stubFor(
-            WireMock.post(anyUrl())
+            WireMock
+                .post(anyUrl())
                 .willReturn(created()),
         )
 
@@ -123,7 +124,8 @@ internal class AbstractRestClientTest {
     @Test
     fun `skal kunne kalle på put-endepunkt og forvente svar uten body`() {
         wireMockServer.stubFor(
-            WireMock.put(anyUrl())
+            WireMock
+                .put(anyUrl())
                 .willReturn(created()),
         )
 
@@ -133,7 +135,8 @@ internal class AbstractRestClientTest {
     @Test
     fun `query param request skal feile hvis query params ikke mer med`() {
         wireMockServer.stubFor(
-            WireMock.get(urlEqualTo("/api/test/123/data"))
+            WireMock
+                .get(urlEqualTo("/api/test/123/data"))
                 .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
@@ -147,7 +150,8 @@ internal class AbstractRestClientTest {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Feil")
         val body = objectMapper.writeValueAsString(problemDetail)
         wireMockServer.stubFor(
-            WireMock.get(anyUrl())
+            WireMock
+                .get(anyUrl())
                 .willReturn(aResponse().withStatus(500).withBody(body)),
         )
         val catchThrowable = catchThrowable { client.test() }
@@ -162,7 +166,8 @@ internal class AbstractRestClientTest {
     internal fun `feil med body som inneholder feltet status men ikke er en ressurs`() {
         val body = objectMapper.writeValueAsString(mapOf("status" to "nei"))
         wireMockServer.stubFor(
-            WireMock.get(anyUrl())
+            WireMock
+                .get(anyUrl())
                 .willReturn(aResponse().withStatus(500).withBody(body)),
         )
         val catchThrowable = catchThrowable { client.test() }
@@ -173,7 +178,8 @@ internal class AbstractRestClientTest {
     @Test
     internal fun `feil uten ressurs kaster videre spring exception`() {
         wireMockServer.stubFor(
-            WireMock.get(anyUrl())
+            WireMock
+                .get(anyUrl())
                 .willReturn(aResponse().withStatus(500)),
         )
         val catchThrowable = catchThrowable { client.test() }

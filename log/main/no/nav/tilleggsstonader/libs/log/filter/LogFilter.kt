@@ -18,7 +18,6 @@ import java.io.EOFException
  * @param sporBruker settes hvis vi skal sette cookie som sporer brukeren for å hjelpe ved feilsøing
  */
 class LogFilter : HttpFilter() {
-
     override fun doFilter(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -62,19 +61,17 @@ class LogFilter : HttpFilter() {
         }
     }
 
-    private fun resolveCallId(request: HttpServletRequest): String {
-        return NAV_CALL_ID_HEADER_NAMES
+    private fun resolveCallId(request: HttpServletRequest): String =
+        NAV_CALL_ID_HEADER_NAMES
             .mapNotNull { request.getHeader(it) }
             .firstOrNull { it.isNotEmpty() }
             ?: IdUtils.generateId()
-    }
 
-    private fun resolveRequestId(request: HttpServletRequest): String {
-        return NAV_REQUEST_ID_HEADER_NAMES
+    private fun resolveRequestId(request: HttpServletRequest): String =
+        NAV_REQUEST_ID_HEADER_NAMES
             .mapNotNull { request.getHeader(it) }
             .firstOrNull { it.isNotEmpty() }
             ?: IdUtils.generateId()
-    }
 
     companion object {
         // there is no consensus in NAV about header-names for correlation ids, so we support 'em all!

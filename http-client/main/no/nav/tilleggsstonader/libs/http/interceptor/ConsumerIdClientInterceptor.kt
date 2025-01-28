@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component
 class ConsumerIdClientInterceptor(
     @Value("\${application.name}") private val appName: String,
 ) : ClientHttpRequestInterceptor {
-
     override fun intercept(
         request: HttpRequest,
         body: ByteArray,

@@ -13,6 +13,8 @@ fun main() {
     println(unleashService.isEnabled(Toggle.ROUTING_TILSYN_BARN))
 }
 
-enum class Toggle(override val toggleId: String) : ToggleId {
+enum class Toggle(
+    override val toggleId: String,
+) : ToggleId {
     ROUTING_TILSYN_BARN("sak.soknad-routing.tilsyn-barn"),
 }

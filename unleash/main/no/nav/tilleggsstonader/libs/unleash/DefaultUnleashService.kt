@@ -12,24 +12,23 @@ internal class DefaultUnleashService(
     appName: String,
     strategies: List<Strategy>,
 ) : UnleashService {
-
-    private val defaultUnleash: DefaultUnleash = DefaultUnleash(
-        UnleashConfig.builder()
-            .appName(appName)
-            .unleashAPI("$apiUrl/api")
-            .apiKey(apiToken)
-            .unleashContextProvider {
-                UnleashContext.builder().appName(appName).build()
-            }.build(),
-        *strategies.toTypedArray(),
-    )
+    private val defaultUnleash: DefaultUnleash =
+        DefaultUnleash(
+            UnleashConfig
+                .builder()
+                .appName(appName)
+                .unleashAPI("$apiUrl/api")
+                .apiKey(apiToken)
+                .unleashContextProvider {
+                    UnleashContext.builder().appName(appName).build()
+                }.build(),
+            *strategies.toTypedArray(),
+        )
 
     override fun isEnabled(
         toggle: ToggleId,
         defaultValue: Boolean,
-    ): Boolean {
-        return defaultUnleash.isEnabled(toggle.toggleId, defaultValue)
-    }
+    ): Boolean = defaultUnleash.isEnabled(toggle.toggleId, defaultValue)
 
     override fun isEnabled(
         toggle: ToggleId,
@@ -40,9 +39,10 @@ internal class DefaultUnleashService(
         return defaultUnleash.isEnabled(toggle.toggleId, builder.build())
     }
 
-    override fun getVariant(toggle: ToggleId, defaultValue: Variant): Variant {
-        return defaultUnleash.getVariant(toggle.toggleId, defaultValue)
-    }
+    override fun getVariant(
+        toggle: ToggleId,
+        defaultValue: Variant,
+    ): Variant = defaultUnleash.getVariant(toggle.toggleId, defaultValue)
 
     override fun destroy() {
         // Spring trigger denne ved shutdown. Gjøres for å unngå at unleash fortsetter å gjøre kall ut

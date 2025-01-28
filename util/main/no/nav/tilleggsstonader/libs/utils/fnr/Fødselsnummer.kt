@@ -2,8 +2,9 @@ package no.nav.tilleggsstonader.libs.utils.fnr
 
 import java.time.LocalDate
 
-data class Fødselsnummer(val verdi: String) {
-
+data class Fødselsnummer(
+    val verdi: String,
+) {
     init {
         check(gyldig(), verdi::toString)
     }
@@ -15,7 +16,16 @@ data class Fødselsnummer(val verdi: String) {
 
     private fun beregnFødselsdato(): LocalDate {
         val dag = verdi.substring(0, 2).toInt() - (if (erDNummer) 40 else 0)
-        val måned = verdi.substring(2, 4).toInt() - (if (erNAVSyntetisk) 40 else if (erSkattSyntetisk) 80 else 0)
+        val måned =
+            verdi.substring(2, 4).toInt() - (
+                if (erNAVSyntetisk) {
+                    40
+                } else if (erSkattSyntetisk) {
+                    80
+                } else {
+                    0
+                }
+            )
         val år = verdi.substring(4, 6).toInt()
         val datoUtenÅrhundre = LocalDate.of(år, måned, dag)
         val individnummer = verdi.substring(6, 9).toInt()
@@ -42,18 +52,20 @@ data class Fødselsnummer(val verdi: String) {
         val kontrollsiffer1 = siffer[9]
         val kontrollsiffer2 = siffer[10]
 
-        return gyldigKontrollSiffer(kontrollMod1, kontrollsiffer1) && gyldigKontrollSiffer(
-            kontrollMod2,
-            kontrollsiffer2,
-        )
+        return gyldigKontrollSiffer(kontrollMod1, kontrollsiffer1) &&
+            gyldigKontrollSiffer(
+                kontrollMod2,
+                kontrollsiffer2,
+            )
     }
 
-    private fun gyldigKontrollSiffer(kontrollMod: Int, kontrollsiffer: Int): Boolean {
-        return kontrollMod == kontrollsiffer ||
-            kontrollMod == 11 && kontrollsiffer == 0
-    }
+    private fun gyldigKontrollSiffer(
+        kontrollMod: Int,
+        kontrollsiffer: Int,
+    ): Boolean =
+        kontrollMod == kontrollsiffer ||
+            kontrollMod == 11 &&
+            kontrollsiffer == 0
 
-    override fun toString(): String {
-        return "***********"
-    }
+    override fun toString(): String = "***********"
 }

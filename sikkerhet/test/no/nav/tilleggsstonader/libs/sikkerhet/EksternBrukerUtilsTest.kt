@@ -15,7 +15,6 @@ import org.springframework.web.context.request.RequestAttributes
 import org.springframework.web.context.request.RequestContextHolder
 
 internal class EksternBrukerUtilsTest {
-
     private val tokenx = "tokenx" to JwtToken("eyJhbGciOiJub25lIn0.eyJzdWIiOiIyMjIyMjIyMjIyMiJ9.")
     private val annetToken = "annetToken" to JwtToken("eyJhbGciOiJub25lIn0.eyJzdWIiOiIyMjIyMjIyMjIyMiJ9.")
 
@@ -77,7 +76,10 @@ internal class EksternBrukerUtilsTest {
         }
     }
 
-    private fun setContextHolder(sub: String? = null, pid: String? = null) {
+    private fun setContextHolder(
+        sub: String? = null,
+        pid: String? = null,
+    ) {
         val builder = JWTClaimsSet.Builder()
         sub?.let { builder.subject(it) }
         pid?.let { builder.claim("pid", it) }
