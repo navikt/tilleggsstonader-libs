@@ -1,6 +1,6 @@
 package no.nav.tilleggsstonader.libs.unleash
 
-import io.getunleash.Variant
+import io.getunleash.variant.Variant
 import org.springframework.beans.factory.DisposableBean
 
 interface UnleashService : DisposableBean {

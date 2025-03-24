@@ -2,9 +2,9 @@ package no.nav.tilleggsstonader.libs.unleash
 
 import io.getunleash.DefaultUnleash
 import io.getunleash.UnleashContext
-import io.getunleash.Variant
 import io.getunleash.strategy.Strategy
 import io.getunleash.util.UnleashConfig
+import io.getunleash.variant.Variant
 
 internal class DefaultUnleashService(
     apiUrl: String,

@@ -1,6 +1,6 @@
 package no.nav.tilleggsstonader.libs.unleash
 
-import io.getunleash.Variant
+import io.getunleash.variant.Variant
 
 /**
  * Dummyservice når unleash er disabled
