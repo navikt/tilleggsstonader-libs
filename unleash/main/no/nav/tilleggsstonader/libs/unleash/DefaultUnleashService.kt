@@ -10,6 +10,7 @@ internal class DefaultUnleashService(
     apiUrl: String,
     apiToken: String,
     appName: String,
+    userIdProvider: UserIdProvider?,
     strategies: List<Strategy>,
 ) : UnleashService {
     private val defaultUnleash: DefaultUnleash =
@@ -20,7 +21,11 @@ internal class DefaultUnleashService(
                 .unleashAPI("$apiUrl/api")
                 .apiKey(apiToken)
                 .unleashContextProvider {
-                    UnleashContext.builder().appName(appName).build()
+                    val builder = UnleashContext.builder().appName(appName)
+                    if (userIdProvider != null) {
+                        builder.userId(userIdProvider.userId())
+                    }
+                    builder.build()
                 }.build(),
             *strategies.toTypedArray(),
         )

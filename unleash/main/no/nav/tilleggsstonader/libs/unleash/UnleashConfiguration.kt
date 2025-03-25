@@ -19,12 +19,15 @@ class UnleashConfiguration(
         @Value("\${UNLEASH_SERVER_API_URL}") apiUrl: String,
         @Value("\${UNLEASH_SERVER_API_TOKEN}") apiToken: String,
         @Value("\${NAIS_APP_NAME}") appName: String,
+        @Suppress("SpringJavaInjectionPointsAutowiringInspection")
+        userIdProvider: UserIdProvider?,
     ): UnleashService {
         logger.info("Oppretter FeatureToggleService med strategies:${strategies.map { it.javaClass.simpleName }}")
         return DefaultUnleashService(
             apiUrl = apiUrl,
             apiToken = apiToken,
             appName = appName,
+            userIdProvider = userIdProvider,
             strategies = strategies,
         )
     }
