@@ -5,6 +5,7 @@ private val unleashService: UnleashService =
         apiUrl = "https://tilleggsstonader-unleash-api.nav.cloud.nais.io",
         apiToken = System.getenv("UNLEASH_API_TOKEN"),
         appName = "tilleggsstonader-sak",
+        userIdProvider = null,
         strategies = emptyList(),
     )
 
