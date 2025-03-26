@@ -22,8 +22,8 @@ internal class DefaultUnleashService(
                 .apiKey(apiToken)
                 .unleashContextProvider {
                     val builder = UnleashContext.builder().appName(appName)
-                    if (userIdProvider != null) {
-                        builder.userId(userIdProvider.userId())
+                    userIdProvider?.userId()?.let {
+                        builder.userId(it)
                     }
                     builder.build()
                 }.build(),
