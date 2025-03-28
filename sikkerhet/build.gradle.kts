@@ -1,4 +1,4 @@
-val tokenSupportVersion = "5.0.20"
+val tokenSupportVersion = "5.0.24"
 
 plugins {
     kotlin("plugin.spring") version "2.1.20"
