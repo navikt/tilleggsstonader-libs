@@ -1,5 +1,6 @@
 package no.nav.tilleggsstonader.libs.kafka
 
+import no.nav.tilleggsstonader.libs.log.SecureLogger.secureLogger
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.slf4j.Logger
@@ -18,7 +19,6 @@ class KafkaErrorHandler(
     private val taskScheduler: TaskScheduler,
 ) : CommonContainerStoppingErrorHandler() {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val secureLogger: Logger = LoggerFactory.getLogger("secureLogger")
 
     private val counter = AtomicInteger(0)
     private val lastError = AtomicLong(0)
