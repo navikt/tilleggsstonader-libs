@@ -47,7 +47,7 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.4.4"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.4.5"))
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.assertj:assertj-core")
