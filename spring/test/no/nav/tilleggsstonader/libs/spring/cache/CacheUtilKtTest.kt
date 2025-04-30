@@ -4,6 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -20,6 +21,18 @@ class CacheUtilKtTest {
     @BeforeEach
     internal fun setUp() {
         every { mock.getValue(any()) } answers { firstArg<List<Int>>().associateWith { it } }
+    }
+
+    @Nested
+    inner class GetValue {
+        @Test
+        internal fun `exception som kastes fra valueLoader skal propageres opp`() {
+            val forventetException = Exception("oh noo")
+
+            assertThatException()
+                .isThrownBy { cacheManager.getValue<String, Any>("noe", "key123") { throw forventetException } }
+                .isEqualTo(forventetException)
+        }
     }
 
     @Nested
