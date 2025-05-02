@@ -1,5 +1,6 @@
 package no.nav.tilleggsstonader.libs.spring.cache
 
+import org.springframework.cache.Cache
 import org.springframework.cache.CacheManager
 
 /**
@@ -20,9 +21,20 @@ fun <K : Any, T> CacheManager.getNullable(
     cache: String,
     key: K,
     valueLoader: () -> T?,
-): T? = (getCacheOrThrow(cache)).get(key, valueLoader)
+): T? = getCacheOrThrow(cache).getOrPut(key, valueLoader)
 
 fun CacheManager.getCacheOrThrow(cache: String) = this.getCache(cache) ?: error("Finner ikke cache=$cache")
+
+/**
+ * Dette er en workaround for når man bruker CacheManager direkte. Om det kastes et exception i valueLoader-funksjonen,
+ * blir exceptionet pakket inn i et `Cache.ValueRetrievalException`, noe som er uheldig om man forventer at
+ * det skal bli propagert opp til feks et ControllerAdvice
+ */
+@Suppress("UNCHECKED_CAST")
+private fun <K : Any, T> Cache.getOrPut(
+    key: K,
+    valueLoader: () -> T,
+): T? = (get(key)?.get() as T?) ?: valueLoader().also { put(key, it) }
 
 /**
  * Henter tidligere cachet verdier, og henter ucachet verdier med [valueLoader]
