@@ -1,13 +1,13 @@
 val javaVersion = JavaLanguageVersion.of(21)
 
 plugins {
-    kotlin("jvm") version "2.1.20"
+    kotlin("jvm") version "2.1.21"
     `maven-publish`
     `java-library`
     id("com.diffplug.spotless") version "7.0.3"
     id("com.github.ben-manes.versions") version "0.52.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.18"
-    id("org.cyclonedx.bom") version "2.2.0"
+    id("org.cyclonedx.bom") version "2.3.0"
 }
 
 allprojects {
@@ -51,7 +51,7 @@ subprojects {
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testImplementation("org.assertj:assertj-core")
-        testImplementation("io.mockk:mockk:1.14.0")
+        testImplementation("io.mockk:mockk:1.14.2")
 
         testImplementation("ch.qos.logback:logback-core")
         testImplementation("ch.qos.logback:logback-classic")
