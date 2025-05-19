@@ -7,8 +7,8 @@ import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenExchangeClientIn
 import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenOnBehalfOfClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.ConsumerIdClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.MdcValuesPropagatingClientInterceptor
-import org.springframework.boot.web.client.ClientHttpRequestFactories
-import org.springframework.boot.web.client.ClientHttpRequestFactorySettings
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder
+import org.springframework.boot.http.client.ClientHttpRequestFactorySettings
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -41,12 +41,14 @@ class RestTemplateConfiguration(
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
     ): RetryOAuth2HttpClient {
         val clientHttpRequestFactorySettings =
-            ClientHttpRequestFactorySettings.DEFAULTS
+            ClientHttpRequestFactorySettings
+                .defaults()
                 .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
                 .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
+        val requestFactory = ClientHttpRequestFactoryBuilder.detect().build(clientHttpRequestFactorySettings)
         val restClient =
             restClientBuilder
-                .requestFactory(ClientHttpRequestFactories.get(clientHttpRequestFactorySettings))
+                .requestFactory(requestFactory)
                 .requestInterceptor(consumerIdClientInterceptor)
                 .requestInterceptor(mdcValuesPropagatingClientInterceptor)
                 .build()
@@ -54,11 +56,7 @@ class RestTemplateConfiguration(
     }
 
     @Bean("utenAuth")
-    fun restTemplateUtenAuth(
-        restTemplateBuilder: RestTemplateBuilder,
-        consumerIdClientInterceptor: ConsumerIdClientInterceptor,
-        mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
-    ): RestTemplate =
+    fun restTemplateUtenAuth(restTemplateBuilder: RestTemplateBuilder): RestTemplate =
         restTemplateBuilder
             .defaultBuilderConfig()
             .build()
@@ -105,8 +103,8 @@ class RestTemplateConfiguration(
 
     private fun RestTemplateBuilder.defaultBuilderConfig() =
         this
-            .setConnectTimeout(Duration.of(2, ChronoUnit.SECONDS))
-            .setReadTimeout(Duration.of(25, ChronoUnit.SECONDS))
+            .connectTimeout(Duration.of(2, ChronoUnit.SECONDS))
+            .readTimeout(Duration.of(25, ChronoUnit.SECONDS))
             .additionalInterceptors(
                 consumerIdClientInterceptor,
                 mdcValuesPropagatingClientInterceptor,
