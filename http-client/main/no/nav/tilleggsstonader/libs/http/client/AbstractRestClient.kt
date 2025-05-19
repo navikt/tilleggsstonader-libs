@@ -90,7 +90,11 @@ abstract class AbstractRestClient(
         } catch (e: RestClientResponseException) {
             val url = expand(urlTemplate, uriVariables)
             secureLogger.warn("Feil ved kall method=$method mot url=$url", e)
-            readProblemDetail(e)?.let { throw ProblemDetailException(it, e) } ?: throw e
+            val problemDetail = readProblemDetail(e)
+            if (problemDetail != null) {
+                throw ProblemDetailException(problemDetail, e)
+            }
+            throw e
         } catch (e: Exception) {
             val url = expand(urlTemplate, uriVariables)
             secureLogger.warn("Feil ved kall method=$method mot url=$url", e)
