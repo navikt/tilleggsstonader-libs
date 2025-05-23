@@ -1,6 +1,6 @@
 val tokenSupportVersion = "5.0.27"
 val wiremockVersion = "3.0.1"
-val tilleggsstønaderKontrakterVersion = "2025.05.14-19.56.a0c24fafc810"
+val tilleggsstønaderKontrakterVersion = "2025.05.20-14.35.7e4341942f5c"
 
 plugins {
     kotlin("plugin.spring") version "2.1.21"
