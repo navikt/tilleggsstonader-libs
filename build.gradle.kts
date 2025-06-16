@@ -4,10 +4,10 @@ plugins {
     kotlin("jvm") version "2.1.21"
     `maven-publish`
     `java-library`
-    id("com.diffplug.spotless") version "7.0.3"
+    id("com.diffplug.spotless") version "7.0.4"
     id("com.github.ben-manes.versions") version "0.52.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.18"
-    id("org.cyclonedx.bom") version "2.3.0"
+    id("org.cyclonedx.bom") version "2.3.1"
 }
 
 allprojects {
