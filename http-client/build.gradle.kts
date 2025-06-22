@@ -1,4 +1,4 @@
-val tokenSupportVersion = "5.0.29"
+val tokenSupportVersion = "5.0.30"
 val wiremockVersion = "3.0.1"
 val tilleggsstønaderKontrakterVersion = "2025.06.16-09.26.7154f1aaff32"
 
