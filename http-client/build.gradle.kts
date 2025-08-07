@@ -24,6 +24,7 @@ dependencies {
     api("no.nav.security:token-validation-spring:$tokenSupportVersion")
 
     testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:$wiremockVersion")
+    testImplementation("org.springframework.boot:spring-boot-test")
 }
 
 tasks.sourcesJar {
