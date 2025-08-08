@@ -7,6 +7,7 @@ import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenExchangeClientIn
 import no.nav.tilleggsstonader.libs.http.interceptor.BearerTokenOnBehalfOfClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.ConsumerIdClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.MdcValuesPropagatingClientInterceptor
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder
 import org.springframework.boot.http.client.ClientHttpRequestFactorySettings
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -17,7 +18,6 @@ import org.springframework.context.annotation.Primary
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
 import java.time.Duration
-import java.time.temporal.ChronoUnit
 
 @Suppress("SpringFacetCodeInspection")
 @Configuration
@@ -29,9 +29,11 @@ import java.time.temporal.ChronoUnit
     BearerTokenExchangeClientInterceptor::class,
     MdcValuesPropagatingClientInterceptor::class,
 )
+@EnableConfigurationProperties(HttpClientProperties::class)
 class RestTemplateConfiguration(
     private val consumerIdClientInterceptor: ConsumerIdClientInterceptor,
     private val mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
+    private val httpClientProperties: HttpClientProperties,
 ) {
     @Primary
     @Bean
@@ -43,8 +45,8 @@ class RestTemplateConfiguration(
         val clientHttpRequestFactorySettings =
             ClientHttpRequestFactorySettings
                 .defaults()
-                .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
-                .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
+                .withConnectTimeout(Duration.ofSeconds(1))
+                .withReadTimeout(Duration.ofSeconds(1))
         val requestFactory = ClientHttpRequestFactoryBuilder.detect().build(clientHttpRequestFactorySettings)
         val restClient =
             restClientBuilder
@@ -103,8 +105,8 @@ class RestTemplateConfiguration(
 
     private fun RestTemplateBuilder.defaultBuilderConfig() =
         this
-            .connectTimeout(Duration.of(2, ChronoUnit.SECONDS))
-            .readTimeout(Duration.of(25, ChronoUnit.SECONDS))
+            .connectTimeout(httpClientProperties.connectTimeout)
+            .readTimeout(httpClientProperties.readTimeout)
             .additionalInterceptors(
                 consumerIdClientInterceptor,
                 mdcValuesPropagatingClientInterceptor,
