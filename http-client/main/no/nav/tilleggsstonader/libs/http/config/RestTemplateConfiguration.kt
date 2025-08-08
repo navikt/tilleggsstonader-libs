@@ -38,6 +38,7 @@ class RestTemplateConfiguration(
     @Primary
     @Bean
     fun oAuth2HttpClient(
+        restClientBuilder: RestClient.Builder,
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
     ): RetryOAuth2HttpClient {
@@ -48,8 +49,7 @@ class RestTemplateConfiguration(
                 .withReadTimeout(Duration.ofSeconds(1))
         val requestFactory = ClientHttpRequestFactoryBuilder.detect().build(clientHttpRequestFactorySettings)
         val restClient =
-            RestClient
-                .builder()
+            restClientBuilder
                 .requestFactory(requestFactory)
                 .requestInterceptor(consumerIdClientInterceptor)
                 .requestInterceptor(mdcValuesPropagatingClientInterceptor)
@@ -58,35 +58,47 @@ class RestTemplateConfiguration(
     }
 
     @Bean("utenAuth")
-    fun restTemplateUtenAuth(): RestTemplate =
-        RestTemplateBuilder()
+    fun restTemplateUtenAuth(restTemplateBuilder: RestTemplateBuilder): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .build()
 
     @Bean("tokenExchange")
-    fun restTemplate(bearerTokenExchangeClientInterceptor: BearerTokenExchangeClientInterceptor): RestTemplate =
-        RestTemplateBuilder()
+    fun restTemplate(
+        restTemplateBuilder: RestTemplateBuilder,
+        bearerTokenExchangeClientInterceptor: BearerTokenExchangeClientInterceptor,
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .interceptors(bearerTokenExchangeClientInterceptor)
             .build()
 
     @Bean("azure")
-    fun restTemplateJwtBearer(bearerTokenClientInterceptor: BearerTokenClientInterceptor): RestTemplate =
-        RestTemplateBuilder()
+    fun restTemplateJwtBearer(
+        restTemplateBuilder: RestTemplateBuilder,
+        bearerTokenClientInterceptor: BearerTokenClientInterceptor,
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
 
     @Bean("azureClientCredential")
-    fun restTemplateClientCredentialBearer(bearerTokenClientInterceptor: BearerTokenClientCredentialsClientInterceptor): RestTemplate =
-        RestTemplateBuilder()
+    fun restTemplateClientCredentialBearer(
+        restTemplateBuilder: RestTemplateBuilder,
+        bearerTokenClientInterceptor: BearerTokenClientCredentialsClientInterceptor,
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
 
     @Bean("azureOnBehalfOf")
-    fun restTemplateOnBehalfOfBearer(bearerTokenClientInterceptor: BearerTokenOnBehalfOfClientInterceptor): RestTemplate =
-        RestTemplateBuilder()
+    fun restTemplateOnBehalfOfBearer(
+        restTemplateBuilder: RestTemplateBuilder,
+        bearerTokenClientInterceptor: BearerTokenOnBehalfOfClientInterceptor,
+    ): RestTemplate =
+        restTemplateBuilder
             .defaultBuilderConfig()
             .additionalInterceptors(bearerTokenClientInterceptor)
             .build()
