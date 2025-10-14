@@ -7,7 +7,6 @@ plugins {
     id("com.diffplug.spotless") version "8.0.0"
     id("com.github.ben-manes.versions") version "0.53.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.19"
-    id("org.cyclonedx.bom") version "3.0.0"
 }
 
 allprojects {
@@ -100,8 +99,4 @@ subprojects {
     kotlin.sourceSets["test"].kotlin.srcDirs("test")
     sourceSets["main"].resources.srcDirs("main")
     sourceSets["test"].resources.srcDirs("test")
-}
-
-tasks.cyclonedxBom {
-    setIncludeConfigs(listOf("runtimeClasspath", "compileClasspath"))
 }
