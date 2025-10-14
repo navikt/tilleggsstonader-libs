@@ -23,7 +23,7 @@ allprojects {
     apply(plugin = "se.patrikerdes.use-latest-versions")
     spotless {
         kotlin {
-            ktlint("1.5.0")
+            ktlint("1.7.1")
         }
     }
 
