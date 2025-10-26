@@ -1,4 +1,4 @@
-val tilleggsstønaderKontrakterVersion = "2025.10.02-10.48.58856917dc95"
+val tilleggsstønaderKontrakterVersion = "2025.10.17-12.11.c565284fc91f"
 
 dependencies {
     implementation("org.assertj:assertj-core")
