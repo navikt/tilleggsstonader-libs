@@ -63,6 +63,7 @@ subprojects {
 
     tasks.test {
         useJUnitPlatform()
+        failOnNoDiscoveredTests = false
     }
 
     java {
