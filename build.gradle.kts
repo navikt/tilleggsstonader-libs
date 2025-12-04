@@ -46,7 +46,7 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.5.6"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:3.5.8"))
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
