@@ -13,7 +13,7 @@ class LogFilterConfiguration {
     fun logFilter(): FilterRegistrationBean<LogFilter> {
         logger.info("Registering LogFilter filter")
         val filterRegistration = FilterRegistrationBean<LogFilter>()
-        filterRegistration.filter = LogFilter()
+        filterRegistration.setFilter(LogFilter())
         filterRegistration.order = 1
         return filterRegistration
     }
@@ -22,7 +22,7 @@ class LogFilterConfiguration {
     fun requestTimeFilter(): FilterRegistrationBean<RequestTimeFilter> {
         logger.info("Registering RequestTimeFilter filter")
         val filterRegistration = FilterRegistrationBean<RequestTimeFilter>()
-        filterRegistration.filter = RequestTimeFilter()
+        filterRegistration.setFilter(RequestTimeFilter())
         filterRegistration.order = 2
         return filterRegistration
     }

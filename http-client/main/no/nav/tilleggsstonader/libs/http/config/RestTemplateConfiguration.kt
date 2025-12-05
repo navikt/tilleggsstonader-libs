@@ -9,8 +9,8 @@ import no.nav.tilleggsstonader.libs.http.interceptor.ConsumerIdClientInterceptor
 import no.nav.tilleggsstonader.libs.http.interceptor.MdcValuesPropagatingClientInterceptor
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder
-import org.springframework.boot.http.client.ClientHttpRequestFactorySettings
-import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.boot.http.client.HttpClientSettings
+import org.springframework.boot.restclient.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -43,7 +43,7 @@ class RestTemplateConfiguration(
         mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
     ): RetryOAuth2HttpClient {
         val clientHttpRequestFactorySettings =
-            ClientHttpRequestFactorySettings
+            HttpClientSettings
                 .defaults()
                 .withConnectTimeout(Duration.ofSeconds(1))
                 .withReadTimeout(Duration.ofSeconds(1))
