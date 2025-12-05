@@ -48,6 +48,8 @@ class HttpClientPropertiesTest {
         val binder = Binder(propertySource)
         return binder
             .bind("tilleggsstonader.http-client", HttpClientProperties::class.java)
-            .orElse(HttpClientProperties())
+            .takeIf { it.isBound }
+            ?.get()
+            ?: HttpClientProperties()
     }
 }

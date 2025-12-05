@@ -10,7 +10,8 @@ dependencies {
     implementation(project(":log"))
 
     implementation("org.springframework:spring-context")
-    implementation("org.springframework:spring-web")
+    implementation("org.springframework.boot:spring-boot-restclient")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 

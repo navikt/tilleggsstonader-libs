@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder
+import org.springframework.boot.http.client.HttpClientSettings
 import org.springframework.web.client.RestClient
 import java.net.URI
 import java.time.Duration
@@ -20,7 +21,7 @@ import java.time.temporal.ChronoUnit
 
 internal class RetryOAuth2HttpClientTest {
     val clientHttpRequestFactorySettings =
-        org.springframework.boot.http.client.ClientHttpRequestFactorySettings
+        HttpClientSettings
             .defaults()
             .withConnectTimeout(Duration.of(1, ChronoUnit.SECONDS))
             .withReadTimeout(Duration.of(1, ChronoUnit.SECONDS))
