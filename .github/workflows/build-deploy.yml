@@ -4,6 +4,19 @@ on:
   push:
     branches:
       - 'main'
+    paths:
+      - 'http-client/**'
+      - 'kafka/**'
+      - 'log/**'
+      - 'pdl/**'
+      - 'sikkerhet/**'
+      - 'spring/**'
+      - 'test-util/**'
+      - 'unleash/**'
+      - 'util/**'
+      - '.github/workflows/build-deploy.yml'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
   workflow_dispatch:
 
 jobs:
