@@ -3,7 +3,7 @@ val wiremockVersion = "3.0.1"
 val tilleggsstønaderKontrakterVersion = "2025.10.02-10.48.58856917dc95"
 
 plugins {
-    kotlin("plugin.spring") version "2.2.20"
+    kotlin("plugin.spring") version "2.2.21"
 }
 
 dependencies {
