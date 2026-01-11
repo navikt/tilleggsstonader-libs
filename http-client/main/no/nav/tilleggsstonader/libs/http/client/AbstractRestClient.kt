@@ -1,7 +1,6 @@
 package no.nav.tilleggsstonader.libs.http.client
 
-import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.objectMapper
+import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.jsonMapper
 import no.nav.tilleggsstonader.libs.log.SecureLogger.secureLogger
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -12,6 +11,7 @@ import org.springframework.http.ProblemDetail
 import org.springframework.web.client.RestClientResponseException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
+import tools.jackson.module.kotlin.readValue
 import java.net.URI
 
 /**
@@ -110,7 +110,7 @@ abstract class AbstractRestClient(
     fun readProblemDetail(e: RestClientResponseException): ProblemDetail? {
         val responseBody = e.responseBodyAsString
         return if (responseBody.contains("\"detail\"")) {
-            objectMapper.readValue<ProblemDetail>(responseBody)
+            jsonMapper.readValue<ProblemDetail>(responseBody)
         } else {
             null
         }

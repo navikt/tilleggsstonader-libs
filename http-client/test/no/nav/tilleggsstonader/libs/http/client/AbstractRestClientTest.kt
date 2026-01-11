@@ -9,7 +9,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.okJson
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.objectMapper
+import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.jsonMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.Assertions.catchThrowable
@@ -89,7 +89,7 @@ internal class AbstractRestClientTest {
         wireMockServer.stubFor(
             WireMock
                 .get(urlEqualTo("/api/test/123/data"))
-                .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
+                .willReturn(okJson(jsonMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
         assertDoesNotThrow {
@@ -102,7 +102,7 @@ internal class AbstractRestClientTest {
         wireMockServer.stubFor(
             WireMock
                 .get(urlEqualTo("/api/test/123/data?userId=id"))
-                .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
+                .willReturn(okJson(jsonMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
         assertDoesNotThrow {
@@ -137,7 +137,7 @@ internal class AbstractRestClientTest {
         wireMockServer.stubFor(
             WireMock
                 .get(urlEqualTo("/api/test/123/data"))
-                .willReturn(okJson(objectMapper.writeValueAsString(mapOf("test" to "ok")))),
+                .willReturn(okJson(jsonMapper.writeValueAsString(mapOf("test" to "ok")))),
         )
 
         assertThatThrownBy {
@@ -148,7 +148,7 @@ internal class AbstractRestClientTest {
     @Test
     internal fun `feil med problemDetail kaster ProblemDetailException`() {
         val problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Feil")
-        val body = objectMapper.writeValueAsString(problemDetail)
+        val body = jsonMapper.writeValueAsString(problemDetail)
         wireMockServer.stubFor(
             WireMock
                 .get(anyUrl())
@@ -164,7 +164,7 @@ internal class AbstractRestClientTest {
 
     @Test
     internal fun `feil med body som inneholder feltet status men ikke er en ressurs`() {
-        val body = objectMapper.writeValueAsString(mapOf("status" to "nei"))
+        val body = jsonMapper.writeValueAsString(mapOf("status" to "nei"))
         wireMockServer.stubFor(
             WireMock
                 .get(anyUrl())
