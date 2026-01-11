@@ -1,6 +1,6 @@
 package no.nav.tilleggsstonader.libs.http.client
 
-import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.jsonMapper
+import no.nav.tilleggsstonader.kontrakter.felles.JsonMapperProvider.jsonMapper
 import no.nav.tilleggsstonader.libs.log.SecureLogger.secureLogger
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

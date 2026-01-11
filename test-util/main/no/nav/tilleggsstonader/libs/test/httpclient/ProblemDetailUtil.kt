@@ -1,6 +1,6 @@
 package no.nav.tilleggsstonader.libs.test.httpclient
 
-import no.nav.tilleggsstonader.kontrakter.felles.ObjectMapperProvider.jsonMapper
+import no.nav.tilleggsstonader.kontrakter.felles.JsonMapperProvider.jsonMapper
 import no.nav.tilleggsstonader.libs.http.client.ProblemDetailException
 import no.nav.tilleggsstonader.libs.test.assertions.catchThrowableOfType
 import org.springframework.http.ProblemDetail
