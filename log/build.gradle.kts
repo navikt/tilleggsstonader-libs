@@ -1,5 +1,5 @@
 plugins {
-    kotlin("plugin.spring") version "2.3.0"
+    kotlin("plugin.spring") version "2.2.21"
 }
 
 dependencies {
