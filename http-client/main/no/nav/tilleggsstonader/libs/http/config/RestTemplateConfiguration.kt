@@ -15,8 +15,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Primary
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
+import tools.jackson.module.kotlin.jsonMapper
 import java.time.Duration
 
 @Suppress("SpringFacetCodeInspection")
@@ -53,7 +55,12 @@ class RestTemplateConfiguration(
                 .requestFactory(requestFactory)
                 .requestInterceptor(consumerIdClientInterceptor)
                 .requestInterceptor(mdcValuesPropagatingClientInterceptor)
-                .build()
+                .configureMessageConverters {
+                    it.withJsonConverter(
+                        // Default JsonMapper uten KotlinPropertyNameAsImplicitName
+                        JacksonJsonHttpMessageConverter(jsonMapper()),
+                    )
+                }.build()
         return RetryOAuth2HttpClient(restClient)
     }
 
