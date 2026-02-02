@@ -1,18 +1,18 @@
-val tokenSupportVersion = "5.0.37"
+val tokenSupportVersion = "6.0.0"
 val wiremockVersion = "3.0.1"
-val tilleggsstønaderKontrakterVersion = "2025.10.02-10.48.58856917dc95"
+val tilleggsstønaderKontrakterVersion = "2026.01.30-09.17.cce4015d2343-dev"
 
 plugins {
-    kotlin("plugin.spring") version "2.2.20"
+    kotlin("plugin.spring") version "2.2.21"
 }
 
 dependencies {
     implementation(project(":log"))
 
     implementation("org.springframework:spring-context")
-    implementation("org.springframework:spring-web")
+    implementation("org.springframework.boot:spring-boot-restclient")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     implementation("no.nav.tilleggsstonader.kontrakter:kontrakter-felles:$tilleggsstønaderKontrakterVersion")
 
