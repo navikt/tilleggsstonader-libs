@@ -27,16 +27,18 @@ import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
-internal class AbstractRestClientTest {
+internal class RestTemplateExtensionsTest {
     class TestClient(
         val uri: URI,
-    ) : AbstractRestClient(RestTemplate()) {
+    ) {
+        val restTemplate = RestTemplate()
+
         fun test() {
-            getForEntity<Any>(uri.toString())
+            restTemplate.getForEntity<Any>(uri.toString())
         }
 
         fun testMedUriVariables() {
-            getForEntity<Any>("$uri/api/test/{id}/data", uriVariables = mapOf("id" to "123"))
+            restTemplate.getForEntity<Any>("$uri/api/test/{id}/data", uriVariables = mapOf("id" to "123"))
         }
 
         fun testMedUriComponentsBuilder() {
@@ -47,12 +49,12 @@ internal class AbstractRestClientTest {
                     .queryParam("userId", "{userId}")
                     .encode()
                     .toUriString()
-            getForEntity<Any>(uri, uriVariables = mapOf("id" to "123", "userId" to "id"))
+            restTemplate.getForEntity<Any>(uri, uriVariables = mapOf("id" to "123", "userId" to "id"))
         }
 
-        fun postUtenResponseBody(): String? = postForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
+        fun postUtenResponseBody(): String? = restTemplate.postForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
 
-        fun putUtenResponseBody(): String? = putForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
+        fun putUtenResponseBody(): String? = restTemplate.putForEntityNullable<String>(uri.toString(), emptyMap<String, String>())
     }
 
     companion object {
