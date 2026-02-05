@@ -32,6 +32,7 @@ internal class RestTemplateExtensionsTest {
         val uri: URI,
     ) {
         val restTemplate = RestTemplate()
+
         fun test() {
             restTemplate.getForEntity<Any>(uri.toString())
         }
