@@ -30,13 +30,13 @@ class RestclientConfiguration(
     private val mdcValuesPropagatingClientInterceptor: MdcValuesPropagatingClientInterceptor,
     private val httpClientProperties: HttpClientProperties,
 ) {
-    @Bean("utenAuth")
+    @Bean("restClientUtenAuth")
     fun restClientUtenAuth(restClientBuilder: RestClient.Builder): RestClient =
         restClientBuilder
             .defaultBuilderConfig()
             .build()
 
-    @Bean("tokenExchange")
+    @Bean("restClientTokenExchange")
     fun restClient(
         restClientBuilder: RestClient.Builder,
         bearerTokenExchangeClientInterceptor: BearerTokenExchangeClientInterceptor,
@@ -46,7 +46,7 @@ class RestclientConfiguration(
             .requestInterceptor(bearerTokenExchangeClientInterceptor)
             .build()
 
-    @Bean("azure")
+    @Bean("restClientAzure")
     fun restClientJwtBearer(
         restClientBuilder: RestClient.Builder,
         bearerTokenClientInterceptor: BearerTokenClientInterceptor,
@@ -56,7 +56,7 @@ class RestclientConfiguration(
             .requestInterceptor(bearerTokenClientInterceptor)
             .build()
 
-    @Bean("azureClientCredential")
+    @Bean("restClientAzureClientCredential")
     fun restClientClientCredentialBearer(
         restClientBuilder: RestClient.Builder,
         bearerTokenClientInterceptor: BearerTokenClientCredentialsClientInterceptor,
@@ -66,7 +66,7 @@ class RestclientConfiguration(
             .requestInterceptor(bearerTokenClientInterceptor)
             .build()
 
-    @Bean("azureOnBehalfOf")
+    @Bean("restClientAzureOnBehalfOf")
     fun restClientOnBehalfOfBearer(
         restClientBuilder: RestClient.Builder,
         bearerTokenClientInterceptor: BearerTokenOnBehalfOfClientInterceptor,
