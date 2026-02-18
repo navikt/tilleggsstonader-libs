@@ -29,18 +29,14 @@ class RequestTimeFilter : HttpFilter() {
         code: Int,
         timer: StopWatch,
     ) {
-        if (HttpStatus.valueOf(code).isError) {
-            LOG.warn("{} - {} - ({}). Dette tok {}ms", request.method, request.requestURI, code, timer.totalTimeMillis)
-        } else {
-            if (!shouldNotFilter(request.requestURI)) {
-                LOG.info(
-                    "{} - {} - ({}). Dette tok {}ms",
-                    request.method,
-                    request.requestURI,
-                    code,
-                    timer.totalTimeMillis,
-                )
-            }
+        if (!shouldNotFilter(request.requestURI)) {
+            LOG.info(
+                "{} - {} - ({}). Dette tok {}ms",
+                request.method,
+                request.requestURI,
+                code,
+                timer.totalTimeMillis,
+            )
         }
     }
 
