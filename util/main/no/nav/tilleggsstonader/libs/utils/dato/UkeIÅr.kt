@@ -9,5 +9,6 @@ data class UkeIÅr(
     val år: Int,
 )
 
-fun Periode<LocalDate>.alleDatoerGruppertPåUke() = alleDatoer()
-    .groupBy { UkeIÅr(it.ukenummer(), it.årForUke()) }
+fun Periode<LocalDate>.alleDatoerGruppertPåUke() =
+    alleDatoer()
+        .groupBy { UkeIÅr(it.ukenummer(), it.årForUke()) }
