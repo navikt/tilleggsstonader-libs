@@ -6,7 +6,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class AlleDatoerGruppertPåUkeTest {
-
     @Test
     fun `datoer blir korrekt gruppert på uke og år`() {
         val datoerGruppertPåUke = Datoperiode(1 desember 2026, 1 februar 2030).alleDatoerGruppertPåUke()
@@ -36,5 +35,4 @@ class AlleDatoerGruppertPåUkeTest {
             .isNotEmpty
             .containsExactly(*Datoperiode(1 januar 2029, 7 januar 2029).alleDatoer().toTypedArray())
     }
-
 }
