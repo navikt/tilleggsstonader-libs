@@ -7,8 +7,17 @@ import java.time.LocalDate
 data class UkeIÅr(
     val ukenummer: Int,
     val år: Int,
-)
+): Comparable<UkeIÅr> {
+    override fun compareTo(other: UkeIÅr): Int {
+        return when {
+            this.år != other.år -> this.år - other.år
+            else -> this.ukenummer - other.ukenummer
+        }
+    }
+}
 
 fun Periode<LocalDate>.alleDatoerGruppertPåUke() =
     alleDatoer()
-        .groupBy { UkeIÅr(it.ukenummer(), it.årForUke()) }
+        .groupBy { it.tilUkeIÅr() }
+
+fun LocalDate.tilUkeIÅr() = UkeIÅr(this.ukenummer(), this.årForUke())
