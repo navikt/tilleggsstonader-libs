@@ -64,8 +64,7 @@ data class Fødselsnummer(
         kontrollsiffer: Int,
     ): Boolean =
         kontrollMod == kontrollsiffer ||
-            kontrollMod == 11 &&
-            kontrollsiffer == 0
+            (kontrollMod == 11 && kontrollsiffer == 0)
 
     override fun toString(): String = "***********"
 }
