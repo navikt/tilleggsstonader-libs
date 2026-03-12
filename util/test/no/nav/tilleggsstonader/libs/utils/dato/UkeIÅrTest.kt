@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class UkeIÅrTest {
-
     @Test
     fun `Sjekker at siste uken i 2025 er mindre enn første i 2026`() {
         assertThat(UkeIÅr(52, 2025)).isLessThan(UkeIÅr(1, 2026))
@@ -44,5 +43,4 @@ class UkeIÅrTest {
         assertThat(UkeIÅr(1, 2026)).isGreaterThan(UkeIÅr(52, 2025))
         assertThat(UkeIÅr(52, 2026)).isGreaterThan(UkeIÅr(1, 2025))
     }
-
 }
