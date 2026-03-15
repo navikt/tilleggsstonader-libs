@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation("org.springframework.boot:spring-boot")
     implementation("org.springframework.boot:spring-boot-autoconfigure")
-    api("io.getunleash:unleash-client-java:12.1.2")
+    api("io.getunleash:unleash-client-java:12.2.0")
 }
 
 tasks.sourcesJar {
