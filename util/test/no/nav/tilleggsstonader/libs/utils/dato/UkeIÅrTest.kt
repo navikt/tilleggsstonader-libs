@@ -1,6 +1,7 @@
 package no.nav.tilleggsstonader.libs.utils.dato
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
 class UkeIÅrTest {
@@ -42,5 +43,31 @@ class UkeIÅrTest {
     fun `Sjekker at høyere år alltid er større uansett uke`() {
         assertThat(UkeIÅr(1, 2026)).isGreaterThan(UkeIÅr(52, 2025))
         assertThat(UkeIÅr(52, 2026)).isGreaterThan(UkeIÅr(1, 2025))
+    }
+
+    @Test
+    fun `Kan parse år og uke fra string`() {
+        assertThat(UkeIÅr.fraString("2026-15")).isEqualTo(UkeIÅr(15, 2026))
+        assertThat(UkeIÅr.fraString("2026-05")).isEqualTo(UkeIÅr(5, 2026))
+    }
+
+    @Test
+    fun `Serialisering og deserialisering av UkeIÅr fører til samme objekt`() {
+        val ukeIÅr = UkeIÅr.fraString("2024-24")
+        assertThat(
+            UkeIÅr.fraString(ukeIÅr.toString()),
+        ).isEqualTo(ukeIÅr)
+    }
+
+    @Test
+    fun `Feiler ved ugyldig format`() {
+        assertThatThrownBy { UkeIÅr.fraString("2026/15") }
+            .isInstanceOf(IllegalArgumentException::class.java)
+
+        assertThatThrownBy { UkeIÅr.fraString("år-15") }
+            .isInstanceOf(IllegalArgumentException::class.java)
+
+        assertThatThrownBy { UkeIÅr.fraString("2026-uke") }
+            .isInstanceOf(IllegalArgumentException::class.java)
     }
 }

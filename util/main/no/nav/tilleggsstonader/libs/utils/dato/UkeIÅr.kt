@@ -13,6 +13,20 @@ data class UkeIÅr(
             this.år != other.år -> this.år - other.år
             else -> this.ukenummer - other.ukenummer
         }
+
+    override fun toString(): String = "$år-$ukenummer"
+
+    companion object {
+        fun fraString(s: String): UkeIÅr {
+            val split = s.split("-")
+            require(split.size == 2) { "UkeIÅr må være på formatet år-ukenummer" }
+
+            val år = requireNotNull(split[0].toIntOrNull()) { "Ugyldig år i UkeIÅr: $s" }
+            val uke = requireNotNull(split[1].toIntOrNull()) { "Ugyldig ukenummer i UkeIÅr: $s" }
+
+            return UkeIÅr(uke, år)
+        }
+    }
 }
 
 fun Periode<LocalDate>.alleDatoerGruppertPåUke() =
