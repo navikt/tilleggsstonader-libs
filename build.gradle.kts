@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
     `java-library`
     id("com.diffplug.spotless") version "8.4.0"
-    id("com.github.ben-manes.versions") version "0.53.0"
+    id("com.github.ben-manes.versions") version "0.54.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.19"
 }
 
@@ -48,7 +48,7 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:4.0.5"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:4.0.6"))
         constraints {
             listOf(
                 "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion",
