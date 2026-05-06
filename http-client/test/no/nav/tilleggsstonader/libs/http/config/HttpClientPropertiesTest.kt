@@ -14,6 +14,8 @@ class HttpClientPropertiesTest {
 
         assertThat(properties.connectTimeout).isEqualTo(Duration.ofSeconds(2))
         assertThat(properties.readTimeout).isEqualTo(Duration.ofSeconds(25))
+        assertThat(properties.oauth2ConnectTimeout).isEqualTo(Duration.ofSeconds(2))
+        assertThat(properties.oauth2ReadTimeout).isEqualTo(Duration.ofSeconds(3))
     }
 
     @Test
@@ -22,12 +24,16 @@ class HttpClientPropertiesTest {
             mapOf(
                 "tilleggsstonader.http-client.connect-timeout" to "PT5S",
                 "tilleggsstonader.http-client.read-timeout" to "PT60S",
+                "tilleggsstonader.http-client.oauth2-connect-timeout" to "PT4S",
+                "tilleggsstonader.http-client.oauth2-read-timeout" to "PT7S",
             )
 
         val properties = bindProperties(source)
 
         assertThat(properties.connectTimeout).isEqualTo(Duration.ofSeconds(5))
         assertThat(properties.readTimeout).isEqualTo(Duration.ofSeconds(60))
+        assertThat(properties.oauth2ConnectTimeout).isEqualTo(Duration.ofSeconds(4))
+        assertThat(properties.oauth2ReadTimeout).isEqualTo(Duration.ofSeconds(7))
     }
 
     @Test
@@ -40,7 +46,9 @@ class HttpClientPropertiesTest {
         val properties = bindProperties(source)
 
         assertThat(properties.connectTimeout).isEqualTo(Duration.ofSeconds(10))
-        assertThat(properties.readTimeout).isEqualTo(Duration.ofSeconds(25)) // standard
+        assertThat(properties.readTimeout).isEqualTo(Duration.ofSeconds(25))
+        assertThat(properties.oauth2ConnectTimeout).isEqualTo(Duration.ofSeconds(10))
+        assertThat(properties.oauth2ReadTimeout).isEqualTo(Duration.ofSeconds(3))
     }
 
     private fun bindProperties(source: Map<String, String>): HttpClientProperties {

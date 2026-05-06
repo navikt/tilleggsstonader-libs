@@ -19,7 +19,6 @@ import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.RestTemplate
 import tools.jackson.module.kotlin.jsonMapper
-import java.time.Duration
 
 @Suppress("SpringFacetCodeInspection")
 @Configuration
@@ -47,8 +46,8 @@ class RestTemplateConfiguration(
         val clientHttpRequestFactorySettings =
             HttpClientSettings
                 .defaults()
-                .withConnectTimeout(Duration.ofSeconds(1))
-                .withReadTimeout(Duration.ofSeconds(1))
+                .withConnectTimeout(httpClientProperties.oauth2ConnectTimeout)
+                .withReadTimeout(httpClientProperties.oauth2ReadTimeout)
         val requestFactory = ClientHttpRequestFactoryBuilder.detect().build(clientHttpRequestFactorySettings)
         val restClient =
             restClientBuilder

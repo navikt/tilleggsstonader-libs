@@ -68,17 +68,26 @@ class RetryOAuth2HttpClient(
         retries: Int,
         oAuth2HttpRequest: OAuth2HttpRequest,
     ) {
-        if (shouldRetry(e) && retries < maxRetries) {
-            logger.warn(
-                "Kall mot url=${oAuth2HttpRequest.tokenEndpointUrl} feilet, cause=${
-                    NestedExceptionUtils.getMostSpecificCause(e)::class
-                }",
+        val mostSpecificCause = NestedExceptionUtils.getMostSpecificCause(e)
+        if (shouldRetry(mostSpecificCause) && retries < maxRetries) {
+            logger.info(
+                "Kall mot url=${oAuth2HttpRequest.tokenEndpointUrl} feilet på forsøk=${retries + 1}, retryer, cause=${mostSpecificCause::class}",
             )
-            secureLogger.warn("Kall mot url=${oAuth2HttpRequest.tokenEndpointUrl} feilet med feil=${e.message}")
-        } else {
-            throw e
+            secureLogger.info(
+                "Kall mot url=${oAuth2HttpRequest.tokenEndpointUrl} feilet på forsøk=${retries + 1}, retryer, feil=${e.message}",
+            )
+            return
         }
+
+        if (shouldRetry(mostSpecificCause) && retries > 0) {
+            logger.warn(
+                "Kall mot url=${oAuth2HttpRequest.tokenEndpointUrl} feilet etter ${retries + 1} forsøk, cause=${mostSpecificCause::class}",
+            )
+            secureLogger.warn("Kall mot url=${oAuth2HttpRequest.tokenEndpointUrl} feilet etter ${retries + 1} forsøk, feil=${e.message}")
+        }
+
+        throw e
     }
 
-    private fun shouldRetry(e: Exception): Boolean = retryExceptions.contains(e.cause?.let { it::class })
+    private fun shouldRetry(throwable: Throwable): Boolean = retryExceptions.any { it.java.isInstance(throwable) }
 }
