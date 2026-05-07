@@ -87,6 +87,20 @@ class UkeIÅrTest {
     }
 
     @Test
+    fun `forrigeUke returnerer uken før inneværende uke`() {
+        assertThat(UkeIÅr(10, 2026).forrigeUke()).isEqualTo(UkeIÅr(9, 2026))
+        assertThat(UkeIÅr(2, 2026).forrigeUke()).isEqualTo(UkeIÅr(1, 2026))
+    }
+
+    @Test
+    fun `forrigeUke håndterer årsskifte - uke 1 gir siste uke i forrige år`() {
+        // Uke 1 i 2026 -> uke 53 i 2025 finnes ikke, siste uke er 52
+        assertThat(UkeIÅr(1, 2026).forrigeUke()).isEqualTo(UkeIÅr(52, 2025))
+        // Uke 1 i 2015 -> 2015 har 53 uker
+        assertThat(UkeIÅr(1, 2015).forrigeUke()).isEqualTo(UkeIÅr(53, 2015 - 1))
+    }
+
+    @Test
     fun `Feiler ved ugyldig format`() {
         assertThatThrownBy { UkeIÅr.fraString("2026/15") }
             .isInstanceOf(IllegalArgumentException::class.java)

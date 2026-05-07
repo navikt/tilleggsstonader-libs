@@ -27,6 +27,8 @@ data class UkeIÅr(
         return (0L..6L).map { firstDayOfWeek.plusDays(it) }
     }
 
+    fun forrigeUke(): UkeIÅr = alleDager().first().minusDays(1).tilUkeIÅr()
+
     companion object {
         fun fraString(s: String): UkeIÅr {
             val split = s.split("-")
