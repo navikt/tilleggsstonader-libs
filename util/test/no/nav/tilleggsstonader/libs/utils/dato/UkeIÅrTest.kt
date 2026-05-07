@@ -60,6 +60,33 @@ class UkeIÅrTest {
     }
 
     @Test
+    fun `alleDager returnerer 7 dager for en gitt uke`() {
+        val dager = UkeIÅr(1, 2025).alleDager()
+        assertThat(dager).hasSize(7)
+    }
+
+    @Test
+    fun `alleDager starter på mandag og slutter på søndag`() {
+        val dager = UkeIÅr(1, 2025).alleDager()
+        assertThat(dager.first()).isEqualTo(java.time.LocalDate.of(2024, 12, 30)) // Uke 1 2025 starter 30. des 2024
+        assertThat(dager.last()).isEqualTo(java.time.LocalDate.of(2025, 1, 5))
+    }
+
+    @Test
+    fun `alleDager returnerer riktige dager for en uke midt i året`() {
+        val dager = UkeIÅr(19, 2026).alleDager()
+        assertThat(dager).hasSize(7)
+        assertThat(dager.first()).isEqualTo(java.time.LocalDate.of(2026, 5, 4))
+        assertThat(dager.last()).isEqualTo(java.time.LocalDate.of(2026, 5, 10))
+    }
+
+    @Test
+    fun `alleDager matcher tilUkeIÅr for alle dagene i uken`() {
+        val uke = UkeIÅr(19, 2026)
+        assertThat(uke.alleDager().map { it.tilUkeIÅr() }).containsOnly(uke)
+    }
+
+    @Test
     fun `Feiler ved ugyldig format`() {
         assertThatThrownBy { UkeIÅr.fraString("2026/15") }
             .isInstanceOf(IllegalArgumentException::class.java)
