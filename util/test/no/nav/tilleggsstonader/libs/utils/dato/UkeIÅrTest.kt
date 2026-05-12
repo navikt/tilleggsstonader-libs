@@ -98,7 +98,7 @@ class UkeIÅrTest {
         // Uke 1 i 2026 -> uke 53 i 2025 finnes ikke, siste uke er 52
         assertThat(UkeIÅr(1, 2026).forrigeUke()).isEqualTo(UkeIÅr(52, 2025))
         // Uke 1 i 2015 -> 2015 har 53 uker
-        assertThat(UkeIÅr(1, 2015).forrigeUke()).isEqualTo(UkeIÅr(53, 2015 - 1))
+        assertThat(UkeIÅr(1, 2015).forrigeUke()).isEqualTo(UkeIÅr(52, 2014))
     }
 
     @Test
