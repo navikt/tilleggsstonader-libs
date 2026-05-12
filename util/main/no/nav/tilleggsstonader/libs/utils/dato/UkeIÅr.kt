@@ -29,6 +29,20 @@ data class UkeIÅr(
 
     fun forrigeUke(): UkeIÅr = alleDager().first().minusDays(1).tilUkeIÅr()
 
+    fun mandag() = alleDager()[0]
+
+    fun tirsdag() = alleDager()[1]
+
+    fun onsdag() = alleDager()[2]
+
+    fun torsdag() = alleDager()[3]
+
+    fun fredag() = alleDager()[4]
+
+    fun lørdag() = alleDager()[5]
+
+    fun søndag() = alleDager()[6]
+
     companion object {
         fun fraString(s: String): UkeIÅr {
             val split = s.split("-")
@@ -39,6 +53,10 @@ data class UkeIÅr(
 
             return UkeIÅr(uke, år)
         }
+
+        fun nå() = LocalDate.now().tilUkeIÅr()
+
+        fun forrigeUke() = nå().forrigeUke()
     }
 }
 

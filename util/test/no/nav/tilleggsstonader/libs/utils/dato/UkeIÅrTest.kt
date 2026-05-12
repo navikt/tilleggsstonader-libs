@@ -3,6 +3,7 @@ package no.nav.tilleggsstonader.libs.utils.dato
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
+import java.time.DayOfWeek
 
 class UkeIÅrTest {
     @Test
@@ -110,5 +111,17 @@ class UkeIÅrTest {
 
         assertThatThrownBy { UkeIÅr.fraString("2026-uke") }
             .isInstanceOf(IllegalArgumentException::class.java)
+    }
+
+    @Test
+    fun `ukedager-funksjoner returnerer korrekt dag`() {
+        val uke = UkeIÅr.nå()
+        assertThat(uke.mandag().dayOfWeek).isEqualTo(DayOfWeek.MONDAY)
+        assertThat(uke.tirsdag().dayOfWeek).isEqualTo(DayOfWeek.TUESDAY)
+        assertThat(uke.onsdag().dayOfWeek).isEqualTo(DayOfWeek.WEDNESDAY)
+        assertThat(uke.torsdag().dayOfWeek).isEqualTo(DayOfWeek.THURSDAY)
+        assertThat(uke.fredag().dayOfWeek).isEqualTo(DayOfWeek.FRIDAY)
+        assertThat(uke.lørdag().dayOfWeek).isEqualTo(DayOfWeek.SATURDAY)
+        assertThat(uke.søndag().dayOfWeek).isEqualTo(DayOfWeek.SUNDAY)
     }
 }
