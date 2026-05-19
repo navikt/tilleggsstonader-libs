@@ -1,5 +1,5 @@
 val javaVersion = JavaLanguageVersion.of(21)
-val tomcatVersion = "11.0.21"
+val tomcatVersion = "11.0.22"
 
 plugins {
     kotlin("jvm") version "2.2.21"
