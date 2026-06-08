@@ -5,7 +5,7 @@ plugins {
     kotlin("jvm") version "2.2.21"
     `maven-publish`
     `java-library`
-    id("com.diffplug.spotless") version "8.5.1"
+    id("com.diffplug.spotless") version "8.6.0"
     id("com.github.ben-manes.versions") version "0.54.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.19"
 }
@@ -64,7 +64,7 @@ subprojects {
         testImplementation("org.junit.jupiter:junit-jupiter")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         testImplementation("org.assertj:assertj-core")
-        testImplementation("io.mockk:mockk:1.14.9")
+        testImplementation("io.mockk:mockk:1.14.11")
 
         testImplementation("ch.qos.logback:logback-core")
         testImplementation("ch.qos.logback:logback-classic")
