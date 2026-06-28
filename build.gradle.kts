@@ -2,10 +2,10 @@ val javaVersion = JavaLanguageVersion.of(21)
 val tomcatVersion = "11.0.22"
 
 plugins {
-    kotlin("jvm") version "2.2.21"
+    kotlin("jvm") version "2.4.0"
     `maven-publish`
     `java-library`
-    id("com.diffplug.spotless") version "8.6.0"
+    id("com.diffplug.spotless") version "8.7.0"
     id("com.github.ben-manes.versions") version "0.54.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.19"
 }
@@ -48,7 +48,7 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:4.0.6"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:4.0.7"))
         constraints {
             listOf(
                 "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion",
