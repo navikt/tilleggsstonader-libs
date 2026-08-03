@@ -6,7 +6,7 @@ plugins {
     `maven-publish`
     `java-library`
     id("com.diffplug.spotless") version "8.6.0"
-    id("com.github.ben-manes.versions") version "0.54.0"
+    id("io.github.ben-manes.versions") version "0.59.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.19"
 }
 
@@ -21,7 +21,7 @@ allprojects {
     }
 
     apply(plugin = "com.diffplug.spotless")
-    apply(plugin = "com.github.ben-manes.versions")
+    apply(plugin = "io.github.ben-manes.versions")
     apply(plugin = "se.patrikerdes.use-latest-versions")
     spotless {
         kotlin {
