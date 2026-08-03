@@ -2,7 +2,7 @@ val javaVersion = JavaLanguageVersion.of(21)
 val tomcatVersion = "11.0.22"
 
 plugins {
-    kotlin("jvm") version "2.2.21"
+    kotlin("jvm") version "2.3.21"
     `maven-publish`
     `java-library`
     id("com.diffplug.spotless") version "8.6.0"
