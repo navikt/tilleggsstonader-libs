@@ -1,5 +1,4 @@
 val javaVersion = JavaLanguageVersion.of(21)
-val tomcatVersion = "11.0.22"
 
 plugins {
     kotlin("jvm") version "2.3.21"
@@ -49,17 +48,6 @@ subprojects {
 
     dependencies {
         implementation(platform("org.springframework.boot:spring-boot-dependencies:4.0.6"))
-        constraints {
-            listOf(
-                "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion",
-                "org.apache.tomcat.embed:tomcat-embed-el:$tomcatVersion",
-                "org.apache.tomcat.embed:tomcat-embed-websocket:$tomcatVersion",
-            ).forEach {
-                implementation(it) {
-                    because("Spring Boot 4.0.5 manages Tomcat 11.0.18, but 11.0.21 contains security fixes")
-                }
-            }
-        }
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
