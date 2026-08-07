@@ -7,7 +7,7 @@ import kotlin.contracts.contract
 /**
  * Brukes primært som feil som er årsaket av en saksbehandler, som logges som info, og feil blir logge i vanlig logg
  */
-open class ApiFeil(
+class ApiFeil internal constructor(
     val feil: String,
     val httpStatus: HttpStatus,
 ) : RuntimeException(feil)
@@ -16,15 +16,14 @@ open class ApiFeil(
  * Generelle feil. Logger som Error.
  * @param sensitivFeilmelding logges kun i securelog
  */
-class Feil(
+class Feil internal constructor(
     message: String,
     val sensitivFeilmelding: String? = null,
     val httpStatus: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
     throwable: Throwable? = null,
 ) : RuntimeException(message, throwable)
 
-@Suppress("NOTHING_TO_INLINE")
-inline fun feil(
+fun feil(
     message: String,
     sensitivFeilmelding: String? = null,
     httpStatus: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
@@ -41,7 +40,7 @@ inline fun feilHvis(
         returns() implies !boolean
     }
     if (boolean) {
-        throw Feil(
+        feil(
             message = lazyMessage(),
             sensitivFeilmelding = sensitivFeilmelding?.invoke(),
             httpStatus = httpStatus,
@@ -49,8 +48,7 @@ inline fun feilHvis(
     }
 }
 
-@Suppress("NOTHING_TO_INLINE")
-inline fun brukerfeil(
+fun brukerfeil(
     feil: String,
     httpStatus: HttpStatus = HttpStatus.BAD_REQUEST,
 ): Nothing = throw ApiFeil(feil = feil, httpStatus = httpStatus)
@@ -65,7 +63,7 @@ inline fun brukerfeilHvis(
         returns() implies !boolean
     }
     if (boolean) {
-        throw ApiFeil(
+        brukerfeil(
             feil = lazyMessage(),
             httpStatus = httpStatus,
         )
@@ -96,11 +94,12 @@ inline fun <T> List<T>.singleEllerFeil(
 ): T =
     when (size) {
         1 -> this[0]
-        else -> throw Feil(
-            message = lazyMessage(),
-            sensitivFeilmelding = sensitivFeilmelding?.invoke() ?: lazyMessage(),
-            httpStatus = httpStatus,
-        )
+        else ->
+            feil(
+                message = lazyMessage(),
+                sensitivFeilmelding = sensitivFeilmelding?.invoke() ?: lazyMessage(),
+                httpStatus = httpStatus,
+            )
     }
 
 inline fun <T> Iterable<T>.singleEllerFeil(
