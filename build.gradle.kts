@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "2.3.21"
     `maven-publish`
     `java-library`
-    id("com.diffplug.spotless") version "8.6.0"
+    id("com.diffplug.spotless") version "8.9.0"
     id("io.github.ben-manes.versions") version "0.59.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.19"
 }
@@ -47,7 +47,7 @@ subprojects {
     }
 
     dependencies {
-        implementation(platform("org.springframework.boot:spring-boot-dependencies:4.0.6"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:4.1.0"))
 
         testImplementation("org.junit.jupiter:junit-jupiter")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
