@@ -1,4 +1,4 @@
-val javaVersion = JavaLanguageVersion.of(21)
+val javaVersion = JavaLanguageVersion.of(25)
 
 plugins {
     kotlin("jvm") version "2.3.21"
